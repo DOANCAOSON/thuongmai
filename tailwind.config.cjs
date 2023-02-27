@@ -7,6 +7,7 @@ module.exports = {
       colors: {
         primary: '#1DC071',
         'text-color': '#808191',
+        textColor4: '#B2B3BD',
         violet: '#6F49FD'
       }
     },
