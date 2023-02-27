@@ -1,15 +1,20 @@
 import React from 'react'
 import { useRoutes } from 'react-router-dom'
+import DashboardLayout from './layouts/DashboardLayout/DashboardLayout'
 import RegisterLayout from './layouts/RegisterLayout'
+import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
-import ProductList from './pages/ProductList'
 import Register from './pages/Register'
 
 const useRouteElements = () => {
   const routeElements = useRoutes([
     {
       path: '/',
-      element: <ProductList />
+      element: (
+        <DashboardLayout>
+          <Dashboard />
+        </DashboardLayout>
+      )
     },
     {
       path: '/login',
