@@ -5,7 +5,7 @@ interface Props {
 }
 const DashboardLayout = ({ children }: Props) => {
   return (
-    <div>
+    <div className='w-[1348px] m-auto'>
       <DashboardHeader></DashboardHeader>
       {children}
       <Footer></Footer>
