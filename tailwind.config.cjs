@@ -8,7 +8,10 @@ module.exports = {
         primary: '#1DC071',
         'text-color': '#808191',
         textColor4: '#B2B3BD',
-        violet: '#6F49FD'
+        violet: '#6F49FD',
+        bgPrimary: '#4ACD8D',
+        secondary: '#8C6DFD',
+        textColorwhite: '#FFFFFF'
       }
     },
     screens: {
