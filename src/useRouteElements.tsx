@@ -9,6 +9,7 @@ import Product from './pages/Admin/Product'
 import User from './pages/Admin/User'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
+import ProductDetail from './pages/ProductDetail'
 import Register from './pages/Register'
 
 const useRouteElements = () => {
@@ -35,6 +36,14 @@ const useRouteElements = () => {
         <RegisterLayout>
           <Register />
         </RegisterLayout>
+      )
+    },
+    {
+      path: '/product/:id',
+      element: (
+        <DashboardLayout>
+          <ProductDetail />
+        </DashboardLayout>
       )
     },
     {
