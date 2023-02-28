@@ -11,7 +11,11 @@ module.exports = {
         violet: '#6F49FD',
         bgPrimary: '#4ACD8D',
         secondary: '#8C6DFD',
-        textColorwhite: '#FFFFFF'
+        textColorwhite: '#FFFFFF',
+        iconColor: '#A2A2A8',
+        bgClose: '#F9E3E3',
+        textSearch: '#171725',
+        textsearchColor: '#808191'
       }
     },
     screens: {
