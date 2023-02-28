@@ -5,7 +5,7 @@ import Vector from 'src/assets/images/Vector.png'
 const ProductItem = () => {
   return (
     <Link to=''>
-      <div className='flex flex-col shadow-sm rounded-[15px]'>
+      <div className='flex flex-col shadow-sm rounded-[15px] w-[288px]'>
         <div className='w-[288px] h-[158px] rounded-[25px] overflow-hidden '>
           <img src={MainImage2} alt='' />
         </div>
