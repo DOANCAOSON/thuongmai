@@ -15,7 +15,12 @@ const schema = yup
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/,
         'Password must be at least 8 characters, 1 uppercase, 1 lowercase and 1 number!'
-      )
+      ),
+    confirm_password: yup
+      .string()
+      .label('confirm password')
+      .required('Confirm password already registerd')
+      .oneOf([yup.ref('password'), null], 'Passwords must match')
   })
   .required()
 type FormData = yup.InferType<typeof schema>
@@ -91,6 +96,18 @@ const Register = () => {
               />
             </label>
           </div>
+          <div className='mb-[10px]'>
+            <label>
+              <p className='mb-[10px] mobile:text-[14px]'>Confirm Password *</p>
+              <input
+                {...register('confirm_password')}
+                className={`rounded-lg border h-[52px] w-full pl-[25px] ${
+                  errors.confirm_password ? 'border-[#EB5757]' : 'border-[#F1F1F3]'
+                }`}
+                placeholder={errors.confirm_password ? errors.confirm_password?.message : 'Confirm password'}
+              />
+            </label>
+          </div>
 
           <div>
             <label className='container'>
@@ -112,8 +129,6 @@ const Register = () => {
           <button className='bg-primary w-full text-white rounded-lg py-[15px] mt-[10px] '>Create my account</button>
         </form>
       </div>
-
-      {/* <div className='z-0 w-[2000px] h-[2000px] bg-slate-50 rounded-[100rem] absolute'></div> */}
     </div>
   )
 }

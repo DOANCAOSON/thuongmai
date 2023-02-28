@@ -1,13 +1,14 @@
 import { Link } from 'react-router-dom'
 import MainImage from 'src/assets/images/MainImage.png'
 import Vector from 'src/assets/images/Vector.png'
+import Navbar from 'src/components/Navbar'
 import ProductItem from 'src/components/ProductItem/ProductItem'
 const Dashboard = () => {
   return (
     <div className='flex gap-[40px] '>
-      <div className='mobile:hidden'>nav</div>
+      <Navbar></Navbar>
       <div className='mobile:ml-[30px]'>
-        <section className='mb-[30px] mt-[40px]'>
+        <section className='mb-[30px] '>
           <Link to='/login' className='m-auto'>
             <h1 className='font-[600] text-[18px] leading-7 mb-[20px]'>
               Your Campaign <span className='text-violet'>(4)</span>
