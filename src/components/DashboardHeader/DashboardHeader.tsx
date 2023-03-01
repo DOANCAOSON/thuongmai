@@ -15,6 +15,7 @@ import PlaceHolder1 from '../../assets/images/PlaceHolder1.png'
 import PlaceHolder2 from '../../assets/images/PlaceHolder2.png'
 import PlaceHolder3 from '../../assets/images/PlaceHolder3.png'
 import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const DashboardHeader = () => {
   const [count, setCount] = useState(false)
@@ -28,20 +29,20 @@ const DashboardHeader = () => {
       <div className='dashboardHeader flex m-8'>
         <div className='dashboardHeader__left flex w-[50%] mobile:w-[auto] mobile:justify-between relative'>
           <div className='dashboardHeader__left--logo mr-8 mobile:flex mobile:justify-center mobile:items-center'>
-            <img className='mobile:hidden cursor-pointer' src={Logo} />
+            <Link to='/'>
+              <img className='mobile:hidden cursor-pointer ' src={Logo} />
+            </Link>
+
             <img
               onClick={() => {
                 setCount(!count)
-                setdSearchModal(true)
               }}
               className='hidden mobile:w-[20px] mobile:h-[14px] mobile:block mobile:mt-[18px]'
               src={Bar}
             />
           </div>
           <div
-            className={`${
-              dsearchModal === true ? 'hidden' : 'block'
-            } cursor-pointer mobile:w-[217px] mobile:h-[40px] mobile:top-2 mobile:left-[50px] dashboardHeader__left--search flex items-center absolute z-10 bg-textColorwhite rounded-full w-[430px] h-[46px] p-1 pl-3 lr-2 left-[20%] top-1 `}
+            className={`cursor-pointer mobile:w-[217px] mobile:h-[40px] mobile:top-2 mobile:left-[50px] dashboardHeader__left--search flex items-center absolute z-10 bg-textColorwhite rounded-full w-[430px] h-[46px] p-1 pl-3 lr-2 left-[20%] top-1 `}
           >
             <input
               onFocus={() => setmModal(true)}
@@ -164,7 +165,7 @@ const DashboardHeader = () => {
       <div
         className={`${
           count ? 'translate-x-0' : 'translate-x-[-100%]'
-        } transition-transform pt-10 w-[400px] h-[100vh] bg-slate-200 fixed top-0 hidden mobile:block `}
+        } transition-transform pt-10 w-[400px] h-[100vh] bg-slate-200 fixed z-[1000] top-0 hidden mobile:block `}
       >
         <div className='dasboardHeader__mobile flex  items-center justify-around'>
           <div className='dasboardHeader__mobile--logo w-[40px] h-[40px]'>
@@ -180,7 +181,6 @@ const DashboardHeader = () => {
           <div className='dashboardHeader__left--logo mr-8 mobile:flex mobile:justify-center mobile:items-center'>
             <img
               onClick={() => {
-                setdSearchModal(false)
                 setCount(!count)
               }}
               className='w-[20px] h-[20px]'

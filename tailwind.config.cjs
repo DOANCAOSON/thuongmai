@@ -15,7 +15,8 @@ module.exports = {
         iconColor: '#A2A2A8',
         bgClose: '#F9E3E3',
         textSearch: '#171725',
-        textsearchColor: '#808191'
+        textsearchColor: '#808191',
+        active: 'rgba(0, 0, 0, 0.25)'
       }
     },
     screens: {
