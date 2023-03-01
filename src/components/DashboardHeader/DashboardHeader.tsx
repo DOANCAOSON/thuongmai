@@ -127,7 +127,7 @@ const DashboardHeader = () => {
         </div>
         <div className='dashboardHeader__right flex items-center w-[50%] justify-end mobile:justify-start'>
           <div className='cursor-pointer dashboardHeader__right--fundrising flex items-center mobile:hidden'>
-            <img src={Up} className='w-[24px] h-[24px] mr-2' />
+            <img src={Up} className='w-[24px] h-[24px] mr-2' alt='' />
             <div className='w-[172px] h-[26px] '>
               <select className='cursor-pointer text-base p-1 ' style={{ color: '#4B5264' }}>
                 <option>FundriSing For</option>

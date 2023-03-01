@@ -56,8 +56,10 @@ const BigItem = ({ type }: Props) => {
           </div>
           {type && (
             <>
-              <Button color='primary'>Buy</Button>
-              <Button color=''>Add to cart</Button>
+              <Link to='/cart/2'>
+                <Button color='primary'>Mua ngay</Button>
+              </Link>
+              <Button color=''>Thêm vào giỏ</Button>
             </>
           )}
         </div>
