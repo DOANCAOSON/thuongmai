@@ -7,6 +7,7 @@ import Admin from './pages/Admin'
 import Order from './pages/Admin/Order'
 import Product from './pages/Admin/Product'
 import User from './pages/Admin/User'
+import Cart from './pages/Cart'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import ProductDetail from './pages/ProductDetail'
@@ -76,6 +77,14 @@ const useRouteElements = () => {
         <AdminLayout>
           <User />
         </AdminLayout>
+      )
+    },
+    {
+      path: '/cart/:id',
+      element: (
+        <DashboardLayout>
+          <Cart />
+        </DashboardLayout>
       )
     }
   ])
