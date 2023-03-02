@@ -14,8 +14,9 @@ import PlaceHolder from '../../assets/images/PlaceHolder.png'
 import PlaceHolder1 from '../../assets/images/PlaceHolder1.png'
 import PlaceHolder2 from '../../assets/images/PlaceHolder2.png'
 import PlaceHolder3 from '../../assets/images/PlaceHolder3.png'
-import { useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { AppContext } from 'src/contexts/app.context'
 
 const DashboardHeader = () => {
   const [count, setCount] = useState(false)
@@ -23,7 +24,7 @@ const DashboardHeader = () => {
   const [dsearchModal, setdSearchModal] = useState(false)
   // console.log(modal)
   console.log(dsearchModal)
-
+  const { isAuthenticated } = useContext(AppContext)
   return (
     <div>
       <div className='dashboardHeader flex m-8'>
@@ -139,15 +140,19 @@ const DashboardHeader = () => {
             </div>
           </div>
           <div className='cursor-pointer dashboardHeader__right--start mobile:hidden'>
-            <div className='rounded-md w-[214px] h-[52px] bg-secondary flex items-center justify-center text-white text-base'>
-              Start a campaign
-            </div>
+            <button className='rounded-md w-[214px] h-[52px] bg-secondary flex items-center justify-center text-white text-base'>
+              {isAuthenticated ? <Link to='/cart/2'>Go to cart</Link> : <Link to='/login'>Go to login</Link>}
+            </button>
           </div>
-          <div className='dashboardHeader__right--avatar ml-4 cursor-pointer'>
-            <div className='rounded-md flex items-center justify-center mobile:absolute mobile:right-4 mobile:top-[40px]'>
-              <img className='w-[52px] h-[52px] mobile:w-[40px] mobile:h-[40px] mobile:ml-8' src={Frame} />
+          {isAuthenticated ? (
+            <div className='dashboardHeader__right--avatar ml-4 cursor-pointer'>
+              <div className='rounded-md flex items-center justify-center mobile:absolute mobile:right-4 mobile:top-[40px]'>
+                <img className='w-[52px] h-[52px] mobile:w-[40px] mobile:h-[40px] mobile:ml-8' src={Frame} />
+              </div>
             </div>
-          </div>
+          ) : (
+            ''
+          )}
         </div>
       </div>
 

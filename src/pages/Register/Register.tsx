@@ -2,12 +2,16 @@ import { useState } from 'react'
 import Google from '../../assets/images/Google.png'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation } from 'react-query'
 import * as yup from 'yup'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { registerAccount } from 'src/apis/auth.api'
+import { omit } from 'lodash'
+import { toast } from 'react-toastify'
 
 const schema = yup
   .object({
-    fullName: yup.string().required('Full name already registerd'),
+    name: yup.string().required('Full name already registerd'),
     email: yup.string().email('Incorrect email format!').required('Email already registerd'),
     password: yup
       .string()
@@ -16,7 +20,7 @@ const schema = yup
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/,
         'Password must be at least 8 characters, 1 uppercase, 1 lowercase and 1 number!'
       ),
-    confirm_password: yup
+    confirmPassword: yup
       .string()
       .label('confirm password')
       .required('Confirm password already registerd')
@@ -29,15 +33,37 @@ const Register = () => {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors }
   } = useForm<FormData>({
     resolver: yupResolver(schema)
   })
+  const mutation = useMutation((body: { name: string; password: string; confirmPassword: string; email: string }) => {
+    return registerAccount(body)
+  })
+  const navigate = useNavigate()
   const onSubmit = (data: FormData) => {
     if (term === true) {
-      console.log(data)
+      // const body = omit(data, ['cmd'])
+      mutation.mutate(data, {
+        onSuccess: (dataUser) => {
+          if (dataUser.data.status === 'ERR') {
+            const formError = dataUser.data.message
+            setError('email', {
+              message: formError,
+              type: 'Server'
+            })
+          }
+          if (dataUser.data.status === 'OK') {
+            toast.success('Đăng kí thành công!')
+            navigate('/login')
+            console.log(dataUser.data)
+          }
+        }
+      })
     }
   }
+
   return (
     <div className=' '>
       <div className='z-10 bg-white mx-auto w-[556px] mobile:w-[327px] border rounded-lg flex flex-col px-[60px] py-[50px] mobile:px-[38px]'>
@@ -64,11 +90,11 @@ const Register = () => {
             <label>
               <p className='mb-[10px] mobile:text-[14px]'>Full name *</p>
               <input
-                {...register('fullName')}
+                {...register('name')}
                 className={`rounded-lg border h-[52px] w-full pl-[25px] ${
-                  errors.fullName ? 'border-[#EB5757]' : 'border-[#F1F1F3]'
+                  errors.name ? 'border-[#EB5757]' : 'border-[#F1F1F3]'
                 }`}
-                placeholder={errors.fullName ? errors.fullName?.message : 'Example name'}
+                placeholder={errors.name ? errors.name?.message : 'Example name'}
               />
             </label>
           </div>
@@ -83,6 +109,7 @@ const Register = () => {
                 placeholder={errors.email ? errors.email?.message : 'example@gmail.com'}
               />
             </label>
+            <div className='pt-2 text-red-300'>{errors.email ? errors.email?.message : ''}</div>
           </div>
           <div className='mb-[10px]'>
             <label>
@@ -100,11 +127,11 @@ const Register = () => {
             <label>
               <p className='mb-[10px] mobile:text-[14px]'>Confirm Password *</p>
               <input
-                {...register('confirm_password')}
+                {...register('confirmPassword')}
                 className={`rounded-lg border h-[52px] w-full pl-[25px] ${
-                  errors.confirm_password ? 'border-[#EB5757]' : 'border-[#F1F1F3]'
+                  errors.confirmPassword ? 'border-[#EB5757]' : 'border-[#F1F1F3]'
                 }`}
-                placeholder={errors.confirm_password ? errors.confirm_password?.message : 'Confirm password'}
+                placeholder={errors.confirmPassword ? errors.confirmPassword?.message : 'Confirm password'}
               />
             </label>
           </div>

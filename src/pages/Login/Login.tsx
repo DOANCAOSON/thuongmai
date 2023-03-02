@@ -1,9 +1,14 @@
 import Google from '../../assets/images/Google.png'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation } from 'react-query'
 import * as yup from 'yup'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Input from 'src/components/Input'
+import { LoginAccount } from 'src/apis/auth.api'
+import { toast } from 'react-toastify'
+import { useContext } from 'react'
+import { AppContext } from 'src/contexts/app.context'
 
 const schema = yup
   .object({
@@ -19,15 +24,42 @@ const schema = yup
   .required()
 type FormData = yup.InferType<typeof schema>
 const Login = () => {
+  const { setIsAuthenticated } = useContext(AppContext)
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors }
   } = useForm<FormData>({
     resolver: yupResolver(schema)
   })
+  const navigate = useNavigate()
+
+  const mutation = useMutation((body: Omit<FormData, 'cmd'>) => {
+    return LoginAccount(body)
+  })
   const onSubmit = (data: FormData) => {
-    console.log(data)
+    mutation.mutate(data, {
+      onSuccess: (dataUser) => {
+        if (dataUser.data.status === 'ERR') {
+          const formError = dataUser.data.message
+          setError('email', {
+            message: formError,
+            type: 'Server'
+          })
+          setError('password', {
+            message: formError,
+            type: 'Server'
+          })
+        }
+        if (dataUser.data.status === 'OK') {
+          // const newUser = omit(dataUser.data.data, ['password', 'isAdmin'])
+          toast.success('Đăng nhập thành công!')
+          setIsAuthenticated(true)
+          navigate('/')
+        }
+      }
+    })
   }
   return (
     <div className=' '>
@@ -56,14 +88,16 @@ const Login = () => {
             placeholder={'example@gmail.com'}
             name='email'
           ></Input>
+
           <Input
             register={register}
             errrorMessage={errors.password?.message}
-            placeholder={'Create a password'}
+            placeholder={'Password'}
             name='password'
           ></Input>
+          <div className='text-red-300 pt-2'>{errors.email?.message ? errors.email?.message : ''}</div>
           <div className='text-[14px] text-primary float-right p-3 cursor-pointer'>Forgot password</div>
-          <button className='bg-primary w-full text-white rounded-lg py-[15px] mt-[10px] '>Create my account</button>
+          <button className='bg-primary w-full text-white rounded-lg py-[15px] mt-[10px] '>Login</button>
         </form>
       </div>
     </div>

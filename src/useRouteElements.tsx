@@ -1,6 +1,8 @@
-import React from 'react'
-import { useRoutes } from 'react-router-dom'
+import React, { useContext } from 'react'
+import { Navigate, Outlet, useRoutes } from 'react-router-dom'
+import { AppContext } from './contexts/app.context'
 import AdminLayout from './layouts/AdminLayout'
+import CartLayout from './layouts/CartLayout'
 import DashboardLayout from './layouts/DashboardLayout/DashboardLayout'
 import RegisterLayout from './layouts/RegisterLayout'
 import Admin from './pages/Admin'
@@ -10,13 +12,25 @@ import User from './pages/Admin/User'
 import Cart from './pages/Cart'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
+import UserOrder from './pages/Order/UserOrder'
 import ProductDetail from './pages/ProductDetail'
+import Profile from './pages/Profile'
 import Register from './pages/Register'
+
+function ProtecedRoute() {
+  const { isAuthenticated } = useContext(AppContext)
+  return isAuthenticated ? <Outlet /> : <Navigate to='login' />
+}
+function RejectedRoute() {
+  const { isAuthenticated } = useContext(AppContext)
+  return !isAuthenticated ? <Outlet /> : <Navigate to='/' />
+}
 
 const useRouteElements = () => {
   const routeElements = useRoutes([
     {
       path: '/',
+      index: true,
       element: (
         <DashboardLayout>
           <Dashboard />
@@ -24,20 +38,56 @@ const useRouteElements = () => {
       )
     },
     {
-      path: '/login',
-      element: (
-        <RegisterLayout>
-          <Login />
-        </RegisterLayout>
-      )
+      path: '',
+      element: <ProtecedRoute />,
+      children: [
+        {
+          path: '/profile',
+          element: (
+            <DashboardLayout>
+              <Profile />
+            </DashboardLayout>
+          )
+        },
+        {
+          path: '/cart/:id',
+          element: (
+            <DashboardLayout>
+              <Cart />
+            </DashboardLayout>
+          )
+        },
+        {
+          path: '/order/:id',
+          element: (
+            <DashboardLayout>
+              <UserOrder />
+            </DashboardLayout>
+          )
+        }
+      ]
     },
     {
-      path: '/register',
-      element: (
-        <RegisterLayout>
-          <Register />
-        </RegisterLayout>
-      )
+      path: '',
+      element: <RejectedRoute />,
+      children: [
+        {
+          path: 'login',
+          element: (
+            <RegisterLayout>
+              <Login />
+            </RegisterLayout>
+          )
+        },
+        {
+          path: 'register',
+          element: (
+            <RegisterLayout>
+              <Register />
+            </RegisterLayout>
+          )
+        }
+      ]
     },
     {
       path: '/product/:id',
@@ -77,14 +127,6 @@ const useRouteElements = () => {
         <AdminLayout>
           <User />
         </AdminLayout>
-      )
-    },
-    {
-      path: '/cart/:id',
-      element: (
-        <DashboardLayout>
-          <Cart />
-        </DashboardLayout>
       )
     }
   ])
