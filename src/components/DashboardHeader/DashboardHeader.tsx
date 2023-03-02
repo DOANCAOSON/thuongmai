@@ -42,7 +42,7 @@ const DashboardHeader = () => {
             />
           </div>
           <div
-            className={`cursor-pointer mobile:w-[217px] mobile:h-[40px] mobile:top-2 mobile:left-[50px] dashboardHeader__left--search flex items-center absolute z-10 bg-textColorwhite rounded-full w-[430px] h-[46px] p-1 pl-3 lr-2 left-[20%] top-1 `}
+            className={`cursor-pointer mobile:w-[217px] mobile:h-[40px] mobile:top-2 mobile:left-[50px] dashboardHeader__left--search flex items-center absolute z-10 bg-textColorwhite rounded-full w-[430px] h-[46px] p-1 pl-3 lr-2 left-[20%] top-1 shadow `}
           >
             <input
               onFocus={() => setmModal(true)}
