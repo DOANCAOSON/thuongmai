@@ -24,7 +24,7 @@ const Button = ({ type, color, children }: Props) => {
         color === 'primary' ? 'bg-primary ' : 'bg-violet'
       } text-4 font-[600] w-full text-white h-[52px] rounded-[10px] ${type === 'big' ? 'w-full' : ''} ${
         type === 'small' ? 'w-[191px]' : ''
-      }`}
+      } hover:opacity-90`}
     >
       {children}
     </button>

@@ -1,3 +1,3 @@
-import Order from './Order'
+import Order from './UserOrder'
 
 export default Order

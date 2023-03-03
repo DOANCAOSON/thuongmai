@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
 import { AppContext } from './contexts/app.context'
 import AdminLayout from './layouts/AdminLayout'
-import CartLayout from './layouts/CartLayout'
 import DashboardLayout from './layouts/DashboardLayout/DashboardLayout'
 import RegisterLayout from './layouts/RegisterLayout'
 import Admin from './pages/Admin'
@@ -14,6 +13,7 @@ import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import UserOrder from './pages/Order/UserOrder'
 import ProductDetail from './pages/ProductDetail'
+import ProductList from './pages/ProductList'
 import Profile from './pages/Profile'
 import Register from './pages/Register'
 
@@ -88,6 +88,14 @@ const useRouteElements = () => {
           )
         }
       ]
+    },
+    {
+      path: '/product',
+      element: (
+        <DashboardLayout>
+          <ProductList />
+        </DashboardLayout>
+      )
     },
     {
       path: '/product/:id',

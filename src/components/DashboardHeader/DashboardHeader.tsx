@@ -14,16 +14,17 @@ import PlaceHolder from '../../assets/images/PlaceHolder.png'
 import PlaceHolder1 from '../../assets/images/PlaceHolder1.png'
 import PlaceHolder2 from '../../assets/images/PlaceHolder2.png'
 import PlaceHolder3 from '../../assets/images/PlaceHolder3.png'
-import { useContext, useEffect, useRef, useState } from 'react'
+import { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AppContext } from 'src/contexts/app.context'
+import Button from '../Button'
 
 const DashboardHeader = () => {
   const [count, setCount] = useState(false)
   const [modal, setmModal] = useState(false)
-  const [dsearchModal, setdSearchModal] = useState(false)
-  // console.log(modal)
-  console.log(dsearchModal)
+  // const [dsearchModal, setdSearchModal] = useState(false)
+  // // console.log(modal)
+  // console.log(dsearchModal)
   const { isAuthenticated } = useContext(AppContext)
   return (
     <div>
@@ -31,16 +32,16 @@ const DashboardHeader = () => {
         <div className='dashboardHeader__left flex w-[50%] mobile:w-[auto] mobile:justify-between relative'>
           <div className='dashboardHeader__left--logo mr-8 mobile:flex mobile:justify-center mobile:items-center'>
             <Link to='/'>
-              <img className='mobile:hidden cursor-pointer ' src={Logo} />
+              <img className='mobile:hidden cursor-pointer ' src={Logo} alt='' />
             </Link>
-
-            <img
+            <button
               onClick={() => {
                 setCount(!count)
               }}
               className='hidden mobile:w-[20px] mobile:h-[14px] mobile:block mobile:mt-[18px]'
-              src={Bar}
-            />
+            >
+              <img alt='' src={Bar} />
+            </button>
           </div>
           <div
             className={`cursor-pointer mobile:w-[217px] mobile:h-[40px] mobile:top-2 mobile:left-[50px] dashboardHeader__left--search flex items-center absolute z-10 bg-textColorwhite rounded-full w-[430px] h-[46px] p-1 pl-3 lr-2 left-[20%] top-1 shadow `}
@@ -61,14 +62,14 @@ const DashboardHeader = () => {
                   <div>
                     <h1>See All 10.124 fundraisier</h1>
                   </div>
-                  <div
+                  <button
                     onClick={() => {
                       setmModal(false)
                     }}
                     className='mobile:w-[18px] mobile:h-[18px] bg-bgClose w-[72px] h-[50px] flex items-center justify-center rounded-lg'
                   >
                     <img className='w-6 h-6 mobile:w-[12px] mobile:h-[12px]' src={Close} alt='' />
-                  </div>
+                  </button>
                 </div>
 
                 {/* itemSearch */}
@@ -120,6 +121,7 @@ const DashboardHeader = () => {
             </div>
             <div className='bg-bgPrimary w-[72px] h-[40px] rounded-full  flex mobile:w-[42px] mobile:h-[28px]'>
               <img
+                alt=''
                 src={Search}
                 className=' w-[18px] h-[18px] mobile:w-[16px] mobile:h-[16px]'
                 style={{ margin: 'auto' }}
@@ -140,14 +142,17 @@ const DashboardHeader = () => {
             </div>
           </div>
           <div className='cursor-pointer dashboardHeader__right--start mobile:hidden'>
-            <button className='rounded-md w-[214px] h-[52px] bg-secondary flex items-center justify-center text-white text-base'>
-              {isAuthenticated ? <Link to='/cart/2'>Go to cart</Link> : <Link to='/login'>Go to login</Link>}
-            </button>
+            <Link to={isAuthenticated ? '/product' : '/login'}>
+              <Button>
+                <div className='w-[214px]'>{isAuthenticated ? ' Go shopping' : 'Go to login'}</div>
+              </Button>
+            </Link>
           </div>
           {isAuthenticated ? (
             <div className='dashboardHeader__right--avatar ml-4 cursor-pointer'>
               <div className='rounded-md flex items-center justify-center mobile:absolute mobile:right-4 mobile:top-[40px]'>
-                <img className='w-[52px] h-[52px] mobile:w-[40px] mobile:h-[40px] mobile:ml-8' src={Frame} />
+                <img alt='' className='w-[52px] h-[52px] mobile:w-[40px] mobile:h-[40px] mobile:ml-8' src={Frame} />
+                {/* {profile?.name} */}
               </div>
             </div>
           ) : (
@@ -157,13 +162,13 @@ const DashboardHeader = () => {
       </div>
 
       {/* modal */}
-      <div
+      <button
         onClick={() => {
           setmModal(false)
         }}
         style={{ backgroundColor: 'rgba(23, 23, 37, 0.4)' }}
         className={`${modal === false ? 'hidden' : ''} fixed w-[100vw] h-[100vh]  top-0 left-0 flex`}
-      ></div>
+      ></button>
 
       {/* mobile */}
 
@@ -174,7 +179,7 @@ const DashboardHeader = () => {
       >
         <div className='dasboardHeader__mobile flex  items-center justify-around'>
           <div className='dasboardHeader__mobile--logo w-[40px] h-[40px]'>
-            <img src={Logo} className='w-10 h-10' />
+            <img src={Logo} className='w-10 h-10' alt='' />
           </div>
           <div>
             <div className='dashboardHeader__right--start'>
@@ -184,52 +189,53 @@ const DashboardHeader = () => {
             </div>
           </div>
           <div className='dashboardHeader__left--logo mr-8 mobile:flex mobile:justify-center mobile:items-center'>
-            <img
+            <button
               onClick={() => {
                 setCount(!count)
               }}
               className='w-[20px] h-[20px]'
-              src={Close}
-            />
+            >
+              <img alt='' src={Close} />
+            </button>
           </div>
         </div>
         <div className='dasboardHeader__mobile p-10'>
           <div className='w-[327px] h-[52px] dasboardHeader__mobile--container flex items-center'>
             <div>
-              <img className='w-[18px] h-[18px]' src={Up} />
+              <img alt='' className='w-[18px] h-[18px]' src={Up} />
             </div>
             <p className='text-iconColor ml-2 mr-2 text-xs'>Fundrising For</p>
             <div>
-              <img className='w-[10px] h-[10px]' src={amous} />
+              <img alt='' className='w-[10px] h-[10px]' src={amous} />
             </div>
           </div>
           <div className='dasboardHeader__mobile--container w-[327px] h-[52px] flex items-center'>
             <div>
-              <img className='w-[24px] h-[24px]' src={Dashboard} />
+              <img alt='' className='w-[24px] h-[24px]' src={Dashboard} />
             </div>
             <p className='ml-5 text-iconColor lg-iconColor text-sm mr-1'>Dashboard</p>
           </div>
           <div className='dasboardHeader__mobile--container w-[327px] h-[52px] flex items-center'>
             <div>
-              <img className='w-[24px] h-[24px]' src={Withdraw} />
+              <img alt='' className='w-[24px] h-[24px]' src={Withdraw} />
             </div>
             <p className='ml-5 text-iconColor text-sm mr-1'>Withdraw</p>
           </div>
           <div className='dasboardHeader__mobile--container w-[327px] h-[52px] flex items-center'>
             <div>
-              <img className='w-[24px] h-[24px]' src={Profile} />
+              <img alt='' className='w-[24px] h-[24px]' src={Profile} />
             </div>
             <p className='ml-5 text-iconColor text-sm  mr-1'>Profile</p>
           </div>
           <div className='dasboardHeader__mobile--container w-[327px] h-[52px] flex items-center'>
             <div>
-              <img className='w-[24px] h-[24px]' src={Logout} />
+              <img alt='' className='w-[24px] h-[24px]' src={Logout} />
             </div>
             <p className='ml-5 text-iconColor text-sm  mr-1'>Logout</p>
           </div>{' '}
           <div className='dasboardHeader__mobile--container w-[327px] h-[52px] flex items-center'>
             <div>
-              <img className='w-[24px] h-[24px]' src={Light} />
+              <img alt='' className='w-[24px] h-[24px]' src={Light} />
             </div>
             <p className='ml-5 text-iconColor text-sm  mr-1'>Light/Dark</p>
           </div>

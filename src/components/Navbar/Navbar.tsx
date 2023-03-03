@@ -6,11 +6,12 @@ import { toast } from 'react-toastify'
 import { Link, useLocation } from 'react-router-dom'
 
 const Navbar = () => {
-  const { setIsAuthenticated } = useContext(AppContext)
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const logOutMutation = useMutation({
     mutationFn: logout,
     onSuccess: () => {
       setIsAuthenticated(false)
+      setProfile(null)
       toast.success('Đăng xuất thành công!')
     }
   })
@@ -18,7 +19,6 @@ const Navbar = () => {
     logOutMutation.mutate()
   }
   const location = useLocation()
-  console.log(location.pathname)
   return (
     <div className='mobile:hidden'>
       <div>
@@ -26,8 +26,8 @@ const Navbar = () => {
           <Link to='/'>
             <button
               className={`hover:stroke-primary ${
-                location.pathname === '/' ? 'stroke-primary bg-[#F1FBF7] ' : ''
-              } mb-5 stroke-[#A2A2A8] hover:bg-[#F1FBF7] w-[48px] h-[48px] flex items-center  justify-center rounded-lg `}
+                location.pathname === '/' ? 'stroke-primary bg-[#F1FBF7] ' : 'stroke-[#A2A2A8]'
+              } mb-5  hover:bg-[#F1FBF7] w-[48px] h-[48px] flex items-center  justify-center rounded-lg `}
             >
               <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
                 <path
@@ -68,8 +68,8 @@ const Navbar = () => {
           <Link to='/cart/2'>
             <button
               className={`${
-                location.pathname === '/cart/2' ? 'stroke-primary bg-[#F1FBF7] ' : ''
-              } hover:stroke-primary stroke-[#A2A2A8]  mb-5 hover:bg-[#F1FBF7] w-[48px] h-[48px] flex items-center  justify-center rounded-lg `}
+                location.pathname === '/cart/2' ? 'stroke-primary bg-[#F1FBF7] ' : 'stroke-[#A2A2A8]'
+              } hover:stroke-primary  mb-5 hover:bg-[#F1FBF7] w-[48px] h-[48px] flex items-center  justify-center rounded-lg `}
             >
               <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
                 <g clipPath='url(#clip0_2752_5418)'>
@@ -97,8 +97,8 @@ const Navbar = () => {
           <Link to='/order/2'>
             <button
               className={`${
-                location.pathname === '/order/2' ? 'stroke-primary bg-[#F1FBF7] ' : ''
-              } hover:stroke-primary stroke-[#A2A2A8]  mb-5 hover:bg-[#F1FBF7] w-[48px] h-[48px] flex items-center  justify-center rounded-lg `}
+                location.pathname === '/order/2' ? 'stroke-primary bg-[#F1FBF7] ' : 'stroke-[#A2A2A8]'
+              } hover:stroke-primary  mb-5 hover:bg-[#F1FBF7] w-[48px] h-[48px] flex items-center  justify-center rounded-lg `}
             >
               <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
                 <path
@@ -113,8 +113,8 @@ const Navbar = () => {
           <Link to='/profile'>
             <button
               className={`${
-                location.pathname === '/profile' ? 'stroke-primary bg-[#F1FBF7] ' : ''
-              } hover:stroke-primary mb-5 stroke-[#A2A2A8] hover:bg-[#F1FBF7] w-[48px] h-[48px] flex items-center  justify-center rounded-lg`}
+                location.pathname === '/profile' ? 'stroke-primary bg-[#F1FBF7] ' : 'stroke-[#A2A2A8]'
+              } hover:stroke-primary mb-5  hover:bg-[#F1FBF7] w-[48px] h-[48px] flex items-center  justify-center rounded-lg`}
             >
               <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
                 <circle cx='12' cy='9' r='3' strokeWidth='2' strokeLinecap='round' />
