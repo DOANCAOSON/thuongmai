@@ -26,7 +26,9 @@ const Navbar = () => {
           <Link to='/'>
             <button
               className={`hover:stroke-primary ${
-                location.pathname === '/' ? 'stroke-primary bg-[#F1FBF7] ' : 'stroke-[#A2A2A8]'
+                location.pathname === '/' || location.pathname === '/product'
+                  ? 'stroke-primary bg-[#F1FBF7] '
+                  : 'stroke-[#A2A2A8]'
               } mb-5  hover:bg-[#F1FBF7] w-[48px] h-[48px] flex items-center  justify-center rounded-lg `}
             >
               <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>

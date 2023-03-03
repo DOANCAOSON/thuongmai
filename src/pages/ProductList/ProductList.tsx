@@ -3,7 +3,7 @@ import { useQuery } from 'react-query'
 import { getAllProduct, getProduct } from 'src/apis/product.api'
 import Pagination from 'src/components/Pagination'
 import ProductItem from 'src/components/ProductItem/ProductItem'
-// import SortProductList from 'src/components/SortProductList'
+import SortProductList from 'src/components/SortProductList'
 import useQueryParams from 'src/hooks/useQueryParams'
 import { ProductListComfig } from 'src/types/product.type'
 export type QueryConfigS = {
@@ -14,11 +14,12 @@ const ProductList = () => {
   const queryConfig: QueryConfigS = omitBy(
     {
       page: queryParams.page || 1,
-      limit: queryParams.limit || 3
+      limit: queryParams.limit || 4,
+      sort_by: queryParams.sort_by,
+      order: queryParams.order
     },
     isUndefined
   )
-  console.log(queryConfig)
   const { data } = useQuery({
     queryKey: ['product', queryConfig],
     queryFn: () => {
@@ -26,7 +27,6 @@ const ProductList = () => {
     },
     keepPreviousData: true
   })
-  console.log(data)
   const { data: dataAll2 } = useQuery({
     queryFn: () => {
       return getAllProduct()
@@ -40,7 +40,7 @@ const ProductList = () => {
           <section className='flex justify-center mb-[45px]'>
             <h1 className='font-[700] text-[25px]'>Gồm {totalProduct} sản phẩm</h1>
           </section>
-          {/* <SortProductList queryConfig={queryConfig}></SortProductList> */}
+          <SortProductList queryConfig={queryConfig}></SortProductList>
           <div className='grid grid-cols-4 gap-[30px] mb-[30px]'>
             {data.data.data.map((product) => (
               <div key={product._id}>

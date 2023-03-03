@@ -24,5 +24,6 @@ export interface ProductListComfig {
   page?: number
   limit?: number
   filter?: string
-  sort_by?: string
+  sort_by?: 'createdAt' | 'countInStock' | 'selled' | 'price'
+  order?: 'desc' | 'asc'
 }
