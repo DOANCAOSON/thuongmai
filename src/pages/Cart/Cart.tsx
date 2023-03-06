@@ -7,11 +7,6 @@ import { useEffect, useRef, useState } from 'react'
 const Cart = () => {
   const [quantity, setQuantity] = useState(1)
   const [hidden, setHidden] = useState(false)
-  const [isCheckeds, setIsCheckeds] = useState(false)
-  const [isChecked, setIsChecked] = useState(false)
-  const [isCheckedArr, setIsCheckedArr] = useState([])
-  const inputRef = useRef(null)
-  const inputRef1 = useRef(null)
   const [users, setUsers] = useState([])
 
   const handlerPaymentClick = () => {
@@ -21,25 +16,25 @@ const Cart = () => {
     setHidden(false)
   }
 
-  const cart_products = [
+  const cart_products: any = [
     {
       id: 1,
       img: Dienthoai1,
-      name: 'Product 1',
+      name: 'Product1',
       price: 10.99,
       category: 'Electronics'
     },
     {
       id: 2,
       img: Dienthoai1,
-      name: 'Product 2',
+      name: 'Product2',
       price: 19.99,
       category: 'Clothing'
     },
     {
       id: 3,
       img: Dienthoai1,
-      name: 'Product 2',
+      name: 'Product3',
       price: 19.99,
       category: 'Clothing'
     }
@@ -49,9 +44,9 @@ const Cart = () => {
     setUsers(cart_products)
   }, [])
 
-  const handleChange = (e : any) => {
+  const handleChange = (e: any) => {
     const { name, checked } = e.target
-    if (name === 'allSelect') {
+    if (name === 'checked_all') {
       let tempUser: any = users.map((user: any) => {
         return { ...user, isChecked: checked }
       })
@@ -62,7 +57,7 @@ const Cart = () => {
     }
   }
 
-  const productList = cart_products.map((product) => (
+  const productList = users.map((product) => (
     <div key={product.id}>
       <div className='mobile:px-4 flex items-center justify-between w-[1200px] mb-[50px] mobile:min-w-[350px] mobile:max-w-[450px]'>
         <div className='w-[14.3%] mobile:w-[27%]  justify-center flex items-center'>
@@ -73,7 +68,6 @@ const Cart = () => {
               checked={product?.isChecked || false}
               onChange={handleChange}
               value={product.id}
-              ref={inputRef}
             />
           </label>
         </div>
@@ -142,6 +136,7 @@ const Cart = () => {
                   id='checked_all'
                   checked={!users.some((user) => user?.isChecked !== true)}
                   onChange={handleChange}
+                  name='checked_all'
                 />
                 <label className='ml-4' htmlFor='checked_all'>
                   Chọn tất cả
