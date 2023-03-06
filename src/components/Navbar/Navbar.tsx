@@ -19,6 +19,7 @@ const Navbar = () => {
     logOutMutation.mutate()
   }
   const location = useLocation()
+
   return (
     <div className='mobile:hidden'>
       <div>

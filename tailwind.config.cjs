@@ -17,7 +17,10 @@ module.exports = {
         textSearch: '#171725',
         textsearchColor: '#808191',
         textCart: '#f51010',
-        active: 'rgba(0, 0, 0, 0.25)'
+        active: 'rgba(0, 0, 0, 0.25)',
+        textBlack: '#000000',
+        boderErr: '#ff0000',
+        borderNone: '#e5e7eb',
       }
     },
     screens: {

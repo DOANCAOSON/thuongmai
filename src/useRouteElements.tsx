@@ -16,13 +16,14 @@ import ProductDetail from './pages/ProductDetail'
 import ProductList from './pages/ProductList'
 import Profile from './pages/Profile'
 import Register from './pages/Register'
+const isAuthenticated = true
 
 function ProtecedRoute() {
-  const { isAuthenticated } = useContext(AppContext)
+  // const { isAuthenticated } = useContext(AppContext)
   return isAuthenticated ? <Outlet /> : <Navigate to='login' />
 }
 function RejectedRoute() {
-  const { isAuthenticated } = useContext(AppContext)
+  // const { isAuthenticated } = useContext(AppContext)
   return !isAuthenticated ? <Outlet /> : <Navigate to='/' />
 }
 function IsAdmin() {

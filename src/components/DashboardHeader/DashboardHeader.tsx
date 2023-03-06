@@ -41,6 +41,9 @@ const DashboardHeader = () => {
   })
   const [count, setCount] = useState(false)
   const [modal, setmModal] = useState(false)
+
+  const [dsearchModal, setdSearchModal] = useState(false)
+
   const { isAuthenticated } = useContext(AppContext)
   // const isAdmin = profile?.role === 'admin'
   const onSubmitSearch = handleSubmit((data) => {
