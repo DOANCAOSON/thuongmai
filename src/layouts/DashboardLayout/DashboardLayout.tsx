@@ -10,7 +10,7 @@ const DashboardLayout = ({ children }: Props) => {
       <DashboardHeader />
       <div className='flex gap-[30px]'>
         <Navbar></Navbar>
-        <div>{children}</div>
+        <div className='w-full'>{children}</div>
       </div>
       <Footer />
     </div>

@@ -1,7 +1,8 @@
 import axios, { type AxiosInstance } from 'axios'
+import { omit } from 'lodash'
 import { toast } from 'react-toastify'
 import { AuthResponse } from 'src/types/auth.type'
-import { clearAccessTokenFromLS, getAccessTokenFromLS, saveAccesTokenToLS } from './auth'
+import { clearLS, getAccessTokenFromLS, setAccesTokenToLS, setProfileFromLS } from './auth'
 class Http {
   instance: AxiosInstance
   private accessToken?: string
@@ -30,11 +31,14 @@ class Http {
       (response) => {
         const { url } = response.config
         if (url === '/user/sign-in' || url === '/user/sign-up') {
+          const dataProfile = response.data.data
+          const newUser = omit(dataProfile, ['password', 'isAdmin'])
           this.accessToken = (response as AuthResponse).data?.access_token
-          saveAccesTokenToLS(this.accessToken)
+          setAccesTokenToLS(this.accessToken)
+          setProfileFromLS(newUser)
         } else if (url === '/user/log-out') {
           this.accessToken = ''
-          clearAccessTokenFromLS(this.accessToken)
+          clearLS(this.accessToken)
         }
         return response
       },
