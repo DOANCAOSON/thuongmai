@@ -22,8 +22,12 @@ import Button from '../Button'
 const DashboardHeader = () => {
   const [count, setCount] = useState(false)
   const [modal, setmModal] = useState(false)
+
+  const [dsearchModal, setdSearchModal] = useState(false)
+
   // const [dsearchModal, setdSearchModal] = useState(false)
   // // console.log(modal)
+
   // console.log(dsearchModal)
   const { isAuthenticated } = useContext(AppContext)
   return (
