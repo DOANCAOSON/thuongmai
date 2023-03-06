@@ -25,6 +25,10 @@ function RejectedRoute() {
   const { isAuthenticated } = useContext(AppContext)
   return !isAuthenticated ? <Outlet /> : <Navigate to='/' />
 }
+function IsAdmin() {
+  const { profile } = useContext(AppContext)
+  return profile?.role === 'admin' ? <Outlet /> : <Navigate to='/' />
+}
 
 const useRouteElements = () => {
   const routeElements = useRoutes([
@@ -106,36 +110,42 @@ const useRouteElements = () => {
       )
     },
     {
-      path: '/admin',
-      element: (
-        <AdminLayout>
-          <Admin />
-        </AdminLayout>
-      )
-    },
-    {
-      path: '/admin/list-order',
-      element: (
-        <AdminLayout>
-          <Order />
-        </AdminLayout>
-      )
-    },
-    {
-      path: '/admin/list-product',
-      element: (
-        <AdminLayout>
-          <Product />
-        </AdminLayout>
-      )
-    },
-    {
-      path: '/admin/list-user',
-      element: (
-        <AdminLayout>
-          <User />
-        </AdminLayout>
-      )
+      path: '',
+      element: <IsAdmin />,
+      children: [
+        {
+          path: '/admin',
+          element: (
+            <AdminLayout>
+              <Admin />
+            </AdminLayout>
+          )
+        },
+        {
+          path: '/admin/list-order',
+          element: (
+            <AdminLayout>
+              <Order />
+            </AdminLayout>
+          )
+        },
+        {
+          path: '/admin/list-product',
+          element: (
+            <AdminLayout>
+              <Product />
+            </AdminLayout>
+          )
+        },
+        {
+          path: '/admin/list-user',
+          element: (
+            <AdminLayout>
+              <User />
+            </AdminLayout>
+          )
+        }
+      ]
     }
   ])
   return routeElements

@@ -15,17 +15,52 @@ import PlaceHolder1 from '../../assets/images/PlaceHolder1.png'
 import PlaceHolder2 from '../../assets/images/PlaceHolder2.png'
 import PlaceHolder3 from '../../assets/images/PlaceHolder3.png'
 import { useContext, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { createSearchParams, Link, useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
 import { AppContext } from 'src/contexts/app.context'
 import Button from '../Button'
+import useQueryConfig from 'src/hooks/useQueryConfig'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { omit } from 'lodash'
 
+const schema = yup
+  .object({
+    name: yup.string().trim().required('Chưa điền tên')
+  })
+  .required()
+type FormData = yup.InferType<typeof schema>
 const DashboardHeader = () => {
+  const navigate = useNavigate()
+  const queryConfig = useQueryConfig()
+  const { register, handleSubmit } = useForm<FormData>({
+    defaultValues: {
+      name: ''
+    },
+    resolver: yupResolver(schema)
+  })
   const [count, setCount] = useState(false)
   const [modal, setmModal] = useState(false)
-  // const [dsearchModal, setdSearchModal] = useState(false)
-  // // console.log(modal)
-  // console.log(dsearchModal)
   const { isAuthenticated } = useContext(AppContext)
+  // const isAdmin = profile?.role === 'admin'
+  const onSubmitSearch = handleSubmit((data) => {
+    const config = queryConfig.order
+      ? omit(
+          {
+            ...queryConfig,
+            name: data.name
+          },
+          ['order', 'sort_by']
+        )
+      : {
+          ...queryConfig,
+          name: data.name
+        }
+    navigate({
+      pathname: '/product/',
+      search: createSearchParams(config).toString()
+    })
+  })
   return (
     <div>
       <div className='dashboardHeader flex m-8'>
@@ -43,7 +78,8 @@ const DashboardHeader = () => {
               <img alt='' src={Bar} />
             </button>
           </div>
-          <div
+          <form
+            onSubmit={onSubmitSearch}
             className={`cursor-pointer mobile:w-[217px] mobile:h-[40px] mobile:top-2 mobile:left-[50px] dashboardHeader__left--search flex items-center absolute z-10 bg-textColorwhite rounded-full w-[430px] h-[46px] p-1 pl-3 lr-2 left-[20%] top-1 shadow `}
           >
             <input
@@ -51,6 +87,8 @@ const DashboardHeader = () => {
               type='text'
               className='text-sm mobile:text-xs w-[85%] z-1'
               placeholder='Do Fundrise now'
+              {...register('name')}
+              // onChange={handleChangeSearch}
             />
             <div
               className={`${
@@ -119,15 +157,15 @@ const DashboardHeader = () => {
                 </div>
               </div>
             </div>
-            <div className='bg-bgPrimary w-[72px] h-[40px] rounded-full  flex mobile:w-[42px] mobile:h-[28px]'>
+            <button className='bg-bgPrimary w-[72px] h-[40px] rounded-full  flex mobile:w-[42px] mobile:h-[28px]'>
               <img
                 alt=''
                 src={Search}
                 className=' w-[18px] h-[18px] mobile:w-[16px] mobile:h-[16px]'
                 style={{ margin: 'auto' }}
               />
-            </div>
-          </div>
+            </button>
+          </form>
         </div>
         <div className='dashboardHeader__right flex items-center w-[50%] justify-end mobile:justify-start'>
           <div className='cursor-pointer dashboardHeader__right--fundrising flex items-center mobile:hidden'>
@@ -152,7 +190,6 @@ const DashboardHeader = () => {
             <div className='dashboardHeader__right--avatar ml-4 cursor-pointer'>
               <div className='rounded-md flex items-center justify-center mobile:absolute mobile:right-4 mobile:top-[40px]'>
                 <img alt='' className='w-[52px] h-[52px] mobile:w-[40px] mobile:h-[40px] mobile:ml-8' src={Frame} />
-                {/* {profile?.name} */}
               </div>
             </div>
           ) : (
