@@ -23,7 +23,7 @@ const DashboardHeader = () => {
   const [modal, setmModal] = useState(false)
   const [dsearchModal, setdSearchModal] = useState(false)
   // console.log(modal)
-  console.log(dsearchModal)
+  // console.log(dsearchModal)
   const { isAuthenticated } = useContext(AppContext)
   return (
     <div>
