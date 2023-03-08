@@ -3,8 +3,16 @@ export interface User {
   email?: string
   password?: string
   isAdmin?: boolean
+  phone?: number
+  address?: string
   role?: string
   _id?: string
   createdAt?: string
   updatedAt?: string
+}
+
+export interface ListUser {
+  data?: User[]
+  message?: string
+  status?: string
 }

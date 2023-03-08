@@ -25,6 +25,7 @@ const Dashboard = () => {
       return getProduct(queryConfigS)
     }
   })
+
   return (
     <div className='flex'>
       <div className='mobile:ml-[30px]'>

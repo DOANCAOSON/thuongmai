@@ -12,7 +12,8 @@ class Http {
       baseURL: 'http://localhost:5000/api/',
       timeout: 10000,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        token: `Beare ${this.accessToken}`
       }
     })
     this.instance.interceptors.request.use(
