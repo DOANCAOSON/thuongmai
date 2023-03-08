@@ -96,7 +96,7 @@ const Profile = () => {
           <div className='text-text-color text-xs'>Update your account information</div>
         </div>
         <div className='mb-10'>
-          <div className='flex w-[873px]  justify-between mobile:justify-start mobile:text-base'>
+          <div className='flex w-[1074px]  justify-between mobile:justify-start mobile:text-base'>
             <div className='text-xl text-textSearch font-bold mr-10'>PreSonal Information</div>
             <div onClick={handleEditProfile} className='flex items-center '>
               <div className='mr-2'>
@@ -119,7 +119,7 @@ const Profile = () => {
             <div
               className={`${formErrors.name === 'Username is required!' ? 'border-boderErr border-[1px] ' : ''} 
                ${formValues.name ? 'border-borderNone' : ''}
-              w-[80%] mobile:w-[36%] h-[50px] bt-[50px] border-2 rounded`}
+              w-[80%] mobile:w-[100%] h-[50px] bt-[50px] border-2 rounded`}
             >
               <input
                 disabled={isDisabled}
@@ -143,7 +143,7 @@ const Profile = () => {
               ${formErrors.lastname === 'Lastname is required!' ? 'border-boderErr border-[1px]' : ''}
                ${formValues.lastname ? 'border-borderNone' : ''}
               
-              w-[80%]  mobile:w-[36%]  h-[50px] bt-[50px] border-2 rounded `}
+              w-[80%]  mobile:w-[100%]  h-[50px] bt-[50px] border-2 rounded `}
             >
               <input
                 disabled={isDisabled}
@@ -166,7 +166,7 @@ const Profile = () => {
               className={`
               ${formErrors.address === 'Adress is required!' ? 'border-boderErr border-[1px]' : ''}
                ${formValues.address ? 'border-borderNone' : ''}
-              w-[80%]  mobile:w-[36%]  h-[50px] bt-[50px] border-2 rounded `}
+              w-[80%]  mobile:w-[100%]  h-[50px] bt-[50px] border-2 rounded `}
             >
               <input
                 disabled={isDisabled}
@@ -189,7 +189,7 @@ const Profile = () => {
               className={`
               ${formErrors.number === Number ? 'border-boderErr border-[1px]' : ''} 
                 ${formValues.number ? 'border-borderNone' : ''}
-              w-[80%]  mobile:w-[36%]  h-[50px] bt-[50px] border-2 rounded `}
+              w-[80%]  mobile:w-[100%]  h-[50px] bt-[50px] border-2 rounded `}
             >
               <input
                 disabled={isDisabled}
@@ -228,7 +228,7 @@ const Profile = () => {
                 ${formValues.email ? 'border-borderNone' : ''}
               ${
                 formErrors.email === 'This is not a valid email format!' ? 'border-boderErr border-[1px]' : ''
-              } flex items-center border-2 rounded-sm  mobile:w-[36%]  h-[50px] w-[90%]`}
+              } flex items-center border-2 rounded-sm  mobile:w-[100%]  h-[50px] w-[90%]`}
             >
               <div className='ml-4 mr-4 w-[24px] h-[24px]'>
                 <img src={Email} alt='' />
@@ -251,7 +251,7 @@ const Profile = () => {
 
         <div>
           <div className='grid grid-cols-2 mobile:grid-cols-1'>
-            <div className='w-[100%] mobile:w-[45%] mobile:mb-[28px] '>
+            <div className='w-[100%] mobile:w-[100%] mobile:mb-[28px] '>
               <div className='mb-2'>
                 <label htmlFor=''>New Password</label>
               </div>
@@ -260,7 +260,7 @@ const Profile = () => {
                 ${formErrors.password === 'Password is required' ? 'border-boderErr border-[1px]' : ''}
                 ${formValues.password ? 'border-borderNone' : ''}
                 
-                w-[80%]  mobile:w-[36%]  h-[50px] bt-[50px] border-2 rounded flex  items-center  `}
+                w-[80%]  mobile:w-[100%]  h-[50px] bt-[50px] border-2 rounded flex  items-center  `}
               >
                 <div className='ml-4 mr-4 w-[24px] h-[24px]'>
                   <img src={Lock} alt='' />
@@ -282,7 +282,7 @@ const Profile = () => {
               </div>
             </div>
 
-            <div className='w-[100%] mobile:w-[45%]'>
+            <div className='w-[100%] mobile:w-[100%]'>
               <div className='mb-2'>
                 <label htmlFor=''>Confirm Password</label>
               </div>
@@ -290,7 +290,7 @@ const Profile = () => {
                 className={`
                 ${formErrors.password === 'Password is required' ? 'border-boderErr border-[1px]' : ''}
                  ${formValues.checkpassword ? 'border-borderNone' : ''}
-                w-[80%]  mobile:w-[36%]  h-[50px] bt-[50px] border-2 rounded flex  items-center  `}
+                w-[80%]  mobile:w-[100%]  h-[50px] bt-[50px] border-2 rounded flex  items-center  `}
               >
                 <div className='ml-4 mr-4 w-[24px] h-[24px]'>
                   <img src={Lock} alt='' />
