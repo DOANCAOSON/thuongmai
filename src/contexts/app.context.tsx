@@ -9,6 +9,7 @@ interface AppContextInterface {
   setProfile: React.Dispatch<React.SetStateAction<User | null>>
   cart: any
   setCart: React.Dispatch<React.SetStateAction<User | null>>
+ 
 }
 const initialAppContext: AppContextInterface = {
   isAuthenticated: Boolean(getAccessTokenFromLS()),

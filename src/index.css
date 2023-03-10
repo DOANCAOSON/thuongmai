@@ -102,3 +102,32 @@ select {
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
 }
+.product-list {
+  width: 70vw;
+  margin: 0 auto;
+  border-collapse: collapse;
+  margin-top: 50px;
+}
+
+.product-list th,
+.product-list td {
+  padding: 8px;
+  text-align: center;
+}
+
+.product-list th {
+  background-color: #6de4ab;
+  height: 60px;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+
+td {
+  padding: 8px;
+  text-align: left;
+  height: 140px;
+}

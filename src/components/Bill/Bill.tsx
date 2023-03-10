@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { AppContext } from 'src/contexts/app.context'
 import Close from '../../assets/images/Close.png'
 import Maqrnganghang from '../../assets/images/maqrnganhang.jpg'
 
@@ -9,6 +10,9 @@ interface Props {
 }
 
 function Bill({ handlerPaymentClick, hidden, handlerPaymentRemove }: Props) {
+  const { cart } = useContext(AppContext)
+  console.log(cart)
+
   return (
     <div className='mobile:p-5 flex justify-end mobile:justify-start'>
       <div className='w-[50%] h-[auto] mobile:w-[95%] border rounded border-textCart p-6'>
@@ -20,21 +24,21 @@ function Bill({ handlerPaymentClick, hidden, handlerPaymentRemove }: Props) {
         <div className='flex justify-between mb-6'>
           <div className='font-medium'>Reno8T 5G</div>
           <div className='flex'>
-            <div className='text-textCart'>10,000,000</div>
+            <div className='text-textCart'>0</div>
             <div className='text-textCart'>Đ</div>
           </div>
         </div>
         <div className='flex justify-between mb-6'>
           <div className='font-medium'>Tổng Phụ</div>
           <div className='flex'>
-            <div className='text-textCart'>10,000,000</div>
+            <div className='text-textCart'>0</div>
             <div className='text-textCart'>Đ</div>
           </div>
         </div>
         <div className='flex justify-between mb-6'>
           <div className='font-medium'>Tổng</div>
           <div className='flex'>
-            <div className='text-textCart'>10,000,000</div>
+            <div className='text-textCart'>0</div>
             <div className='text-textCart'>Đ</div>
           </div>
         </div>
