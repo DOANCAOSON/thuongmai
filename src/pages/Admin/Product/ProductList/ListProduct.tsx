@@ -11,7 +11,6 @@ import useQueryParams from 'src/hooks/useQueryParams'
 
 const ListProduct = () => {
   const queryClient = useQueryClient()
-
   const queryParams: QueryConfigS = useQueryParams()
   const queryConfig: QueryConfigS = omitBy(
     {

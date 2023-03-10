@@ -21,7 +21,7 @@ const SortProductList = ({ categories, queryConfig }: Props) => {
   }
   const handleSort = (sortByValue: Exclude<ProductListComfig['sort_by'], undefined>) => {
     navigate({
-      pathname: '/product/',
+      pathname: '/product',
       search: createSearchParams(
         omit(
           {
@@ -112,7 +112,7 @@ const SortProductList = ({ categories, queryConfig }: Props) => {
         </div>
       </div>
       <div className={`${moreOt ? 'block' : 'hidden'} mt-4 flex justify-between`}>
-        <div className='flex gap-3 text-center items-center'>
+        <div className='flex gap-3 text-center items-center '>
           {categories.map((item) => {
             const isActive = category === item._id
             return (

@@ -13,9 +13,6 @@ const Button = ({ type, color, children }: Props) => {
     if (e.currentTarget.textContent === 'Trở về') {
       navigate('/')
     }
-    if (e.currentTarget.textContent === 'Thêm vào giỏ') {
-      alert('Đã thêm vào giỏ')
-    }
   }
   return (
     <button

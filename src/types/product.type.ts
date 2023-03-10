@@ -1,5 +1,3 @@
-import { Category } from './category.type'
-
 export interface Product {
   name?: string
   image?: string[]
@@ -7,12 +5,15 @@ export interface Product {
   countInStock?: number
   rating?: number
   description?: string
-  _id?: string
+  _id: string
   selled?: number
-  category?: Category
+  category?: {
+    _id: string
+    name: string
+  }
   discount?: number
-  createdAt?: string
-  updatedAt?: string
+  createdAt: string
+  updatedAt: string
 }
 
 export interface ProductList {

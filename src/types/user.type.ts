@@ -4,6 +4,7 @@ export interface User {
   password?: string
   isAdmin?: boolean
   phone?: number
+  avatar?: string
   address?: string
   role?: string
   _id?: string

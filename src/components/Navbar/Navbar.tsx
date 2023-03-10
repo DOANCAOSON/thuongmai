@@ -1,12 +1,23 @@
-import { useMutation } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import { logout } from 'src/apis/auth.api'
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 import { toast } from 'react-toastify'
 import { Link, useLocation } from 'react-router-dom'
+import { getProfileFromLS } from 'src/utils/auth'
+import { getPurchases } from 'src/apis/purchase.api'
+import { purchasesStatus } from 'src/constants/perchase'
 
 const Navbar = () => {
   const { setIsAuthenticated, setProfile, isAuthenticated } = useContext(AppContext)
+  const profileAccessToken = getProfileFromLS()
+
+  const { data } = useQuery({
+    queryKey: ['purchases', profileAccessToken?._id],
+    queryFn: () => getPurchases(profileAccessToken?._id, { status: purchasesStatus.inCart }),
+    enabled: isAuthenticated
+  })
+
   const logOutMutation = useMutation({
     mutationFn: logout,
     onSuccess: () => {
@@ -68,11 +79,11 @@ const Navbar = () => {
               </svg>
             </button>
           </Link>
-          <Link to='/cart/2'>
+          <Link to='/cart'>
             <button
               className={`${
-                location.pathname === '/cart/2' ? 'stroke-primary bg-[#F1FBF7] ' : 'stroke-[#A2A2A8]'
-              } hover:stroke-primary  mb-5 hover:bg-[#F1FBF7] w-[48px] h-[48px] flex items-center  justify-center rounded-lg `}
+                location.pathname === '/cart' ? 'stroke-primary bg-[#F1FBF7] ' : 'stroke-[#A2A2A8]'
+              } hover:stroke-primary relative mb-5 hover:bg-[#F1FBF7] w-[48px] h-[48px] flex items-center  justify-center rounded-lg `}
             >
               <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
                 <g clipPath='url(#clip0_2752_5418)'>
@@ -95,6 +106,11 @@ const Navbar = () => {
                   </clipPath>
                 </defs>
               </svg>
+              {data?.data.data && (
+                <div className='w-5 h-5 shadow-lg bg-white text-[#A2A2A8] absolute flex rounded-full justify-center items-center  font-[600] top-0 right-0'>
+                  {data?.data.data.length}
+                </div>
+              )}
             </button>
           </Link>
           <Link to='/order/2'>

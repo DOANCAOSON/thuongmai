@@ -31,7 +31,7 @@ const ProductDetail = () => {
     queryFn: () => {
       return getProduct({
         page: 1,
-        limit: 5
+        limit: 4
       })
     },
     enabled: Boolean(product),
@@ -43,7 +43,7 @@ const ProductDetail = () => {
 
   return (
     <div className='pb-[50px] mobile:w-[100%] p-6'>
-      <div className='h-[140px] mobile:w-[100%] mb-10 rounded-[25px] w-[100%] relative'>
+      <div className='h-[140px] mobile:h-[90px] mobile:w-[100%] mb-10 mobile:mb-5 rounded-[25px] w-[100%] relative'>
         <div className=' h-full overflow-hidden rounded-[25px]'>
           <img
             src='https://niemvuilaptrinh.ams3.cdn.digitaloceanspaces.com/background-css-javascript/Scrolling%20Background%20Effect.png'
@@ -51,7 +51,7 @@ const ProductDetail = () => {
           />
         </div>
         <h1 className='font-[700] text-[40px] absolute mobile:text-[20px] top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] text-white'>
-          {/* {category ? <div>{category}</div> : null} */}Category
+          {product?.category.name ? <div>{product?.category.name}</div> : null}
         </h1>
       </div>
       <section className='mobile:w-[100%] mobile:flex mobile:justify-center mobile:mb-[30px] mb-[165px]'>
@@ -71,24 +71,26 @@ const ProductDetail = () => {
       <section className='mobile:w-[100%] py-[10px] mobile:flex-col flex justify-between mb-[70px]'>
         <div className='w-[605px] mobile:w-[327px]'>
           <h1 className='text-[18px] font-[600] mb-[20px]'>Mô tả</h1>
-          <div className='h-[400px] mobile:w-[100%] mobile:h-[216px] mb-[20px]'>
-            <img src={product?.image[0]} alt='' />
+          <div className='h-[700px] mobile:w-[100%] mobile:h-[450px] mb-[20px]'>
+            <img src={product?.image[1]} alt='' />
           </div>
           <div className='px-[30px] mobile:text-[12px] mobile:leading-[18px] text-text-color mb-5 py-[10px] font-[400] text-[16px] leading-[26px]'>
             {product?.description}
           </div>
-          <div className='h-[400px] mobile:w-[100%] mobile:h-[216px] mb-[20px]'>
-            <img src={product?.image[1]} alt='' />
+          <div className='h-[700px] mobile:w-[100%] mobile:h-[450px] mb-[20px]'>
+            <img src={product?.image[2]} alt='' />
           </div>
         </div>
         <div className='w-[441px] mobile:w-[327px]'>
           <h1 className='text-[18px] font-[600] mb-[20px]'>Sản phẩm tương tự</h1>
-          <div className='flex flex-col gap-y-[60px]'>
-            {similarProduct?.map((item) => (
-              <div key={item._id}>
-                <ProductItem product={item}></ProductItem>
-              </div>
-            ))}
+          <div className='flex flex-col gap-y-[60px] mobile:flex-row mobile:gap-x-[30px] mobile:overflow-x-auto'>
+            {similarProduct
+              ?.filter((item) => item._id !== product._id)
+              ?.map((item) => (
+                <div key={item._id}>
+                  <ProductItem product={item}></ProductItem>
+                </div>
+              ))}
           </div>
         </div>
       </section>

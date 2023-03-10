@@ -6,7 +6,7 @@ import { addProduct, getProduct, updateProduct } from 'src/apis/admin.api'
 import { getCategories } from 'src/apis/category.api'
 import { Product } from 'src/types/product.type'
 import FileBase from 'react-file-base64'
-type FormStateType = Omit<Product, '_id'>
+type FormStateType = Omit<Product, '_id' | 'createdAt' | 'updatedAt'>
 const ProductAdd = () => {
   const addMatch = useMatch('/admin/product/add')
   const isAddmode = Boolean(addMatch)
@@ -17,17 +17,14 @@ const ProductAdd = () => {
     price: 0,
     category: {
       _id: '',
-      name: ''
+      name: '',
+      createdAt: '',
+      updatedAt: ''
     },
     countInStock: 0,
     description: '',
     discount: 0,
-    image: [
-      'https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/_MG_3057.jpg',
-      'https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/6.jpg',
-      'https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/_MG_3071.jpg',
-      'https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/_MG_3061.jpg'
-    ]
+    image: []
   }
   const [formState, setFormState] = useState<FormStateType>(initialFromState)
   const { data: categoriesData } = useQuery({
@@ -36,6 +33,7 @@ const ProductAdd = () => {
       return getCategories()
     }
   })
+  console.log(formState)
   const { mutate } = useMutation({
     mutationFn: (body: FormStateType) => {
       return addProduct(body)

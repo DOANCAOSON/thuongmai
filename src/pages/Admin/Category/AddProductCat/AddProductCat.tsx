@@ -25,6 +25,7 @@ const AddProductCat = () => {
     queryKey: ['category', id],
     queryFn: () => getCategory(id),
     enabled: id !== undefined,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onSuccess: (data: any) => {
       setFormState(data.data.data)
     }

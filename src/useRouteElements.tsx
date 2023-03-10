@@ -11,7 +11,6 @@ import Order from './pages/Admin/Order'
 import ProductAdd from './pages/Admin/Product/ProductAdd/ProductAdd'
 import ListProduct from './pages/Admin/Product/ProductList/ListProduct'
 import User from './pages/Admin/User'
-import UserDetail from './pages/Admin/User/UserDetail'
 import Cart from './pages/Cart'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
@@ -46,59 +45,35 @@ const useRouteElements = () => {
       )
     },
     {
-      path: '/profile',
-      element: (
-        <DashboardLayout>
-          <Profile />
-        </DashboardLayout>
-      )
+      path: '',
+      element: <ProtecedRoute />,
+      children: [
+        {
+          path: '/profile',
+          element: (
+            <DashboardLayout>
+              <Profile />
+            </DashboardLayout>
+          )
+        },
+        {
+          path: '/cart',
+          element: (
+            <DashboardLayout>
+              <Cart />
+            </DashboardLayout>
+          )
+        },
+        {
+          path: '/order/:id',
+          element: (
+            <DashboardLayout>
+              <UserOrder />
+            </DashboardLayout>
+          )
+        }
+      ]
     },
-    {
-      path: '/cart/:id',
-      element: (
-        <DashboardLayout>
-          <Cart />
-        </DashboardLayout>
-      )
-    },
-    {
-      path: '/order/:id',
-      element: (
-        <DashboardLayout>
-          <UserOrder />
-        </DashboardLayout>
-      )
-    },
-    // {
-    //   path: '',
-    //   element: <ProtecedRoute />,
-    //   children: [
-    //     {
-    //       path: '/profile',
-    //       element: (
-    //         <DashboardLayout>
-    //           <Profile />
-    //         </DashboardLayout>
-    //       )
-    //     },
-    //     {
-    //       path: '/cart/:id',
-    //       element: (
-    //         <DashboardLayout>
-    //           <Cart />
-    //         </DashboardLayout>
-    //       )
-    //     },
-    //     {
-    //       path: '/order/:id',
-    //       element: (
-    //         <DashboardLayout>
-    //           <UserOrder />
-    //         </DashboardLayout>
-    //       )
-    //     }
-    //   ]
-    // },
     {
       path: '',
       element: <RejectedRoute />,
@@ -186,14 +161,6 @@ const useRouteElements = () => {
           element: (
             <AdminLayout>
               <User />
-            </AdminLayout>
-          )
-        },
-        {
-          path: '/admin/user-detail/:id',
-          element: (
-            <AdminLayout>
-              <UserDetail />
             </AdminLayout>
           )
         },

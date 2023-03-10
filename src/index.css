@@ -102,3 +102,10 @@ select {
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
 }
+
+.line-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

@@ -23,6 +23,10 @@ import useQueryConfig from 'src/hooks/useQueryConfig'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { omit } from 'lodash'
+import { useQuery } from 'react-query'
+import { getUser } from 'src/apis/auth.api'
+import { getProfileFromLS } from 'src/utils/auth'
+import { User } from 'src/types/user.type'
 
 const schema = yup
   .object({
@@ -39,11 +43,21 @@ const DashboardHeader = () => {
     },
     resolver: yupResolver(schema)
   })
+  const profileAccessToken = getProfileFromLS()
+
   const [count, setCount] = useState(false)
   const [modal, setmModal] = useState(false)
-
+  const [profile, setProfile] = useState<User>({})
   const [dsearchModal, setdSearchModal] = useState(false)
-
+  useQuery({
+    queryKey: ['category', profileAccessToken?._id],
+    queryFn: () => getUser(profileAccessToken?._id),
+    enabled: profileAccessToken?._id !== undefined,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onSuccess: (data: any) => {
+      setProfile(data.data.data)
+    }
+  })
   const { isAuthenticated } = useContext(AppContext)
   const onSubmitSearch = handleSubmit((data) => {
     const config = queryConfig.order
@@ -85,80 +99,12 @@ const DashboardHeader = () => {
             className={`cursor-pointer mobile:w-[217px] mobile:h-[40px] mobile:top-2 mobile:left-[50px] dashboardHeader__left--search flex items-center absolute z-10 bg-textColorwhite rounded-full w-[430px] h-[46px] p-1 pl-3 lr-2 left-[20%] top-1 shadow `}
           >
             <input
-              onFocus={() => setmModal(true)}
+              // onFocus={() => setmModal(true)}
               type='text'
               className='text-sm mobile:text-xs w-[85%] z-1'
-              placeholder='Do Fundrise now'
+              placeholder='Nhập tên sản phẩm'
               {...register('name')}
-              // onChange={handleChangeSearch}
             />
-            <div
-              className={`${
-                modal === false ? 'hidden' : ''
-              } mobile:w-[310px] mobile:left-[-54px] w-[843px] h-[auto] top-20 left-0 bg-textColorwhite m-auto rounded-[10px] absolute`}
-            >
-              <div className='p-3 mt-2'>
-                <div className='flex w-[100%] justify-between items-center'>
-                  <div>
-                    <h1>See All 10.124 fundraisier</h1>
-                  </div>
-                  <button
-                    onClick={() => {
-                      setmModal(false)
-                    }}
-                    className='mobile:w-[18px] mobile:h-[18px] bg-bgClose w-[72px] h-[50px] flex items-center justify-center rounded-lg'
-                  >
-                    <img className='w-6 h-6 mobile:w-[12px] mobile:h-[12px]' src={Close} alt='' />
-                  </button>
-                </div>
-
-                {/* itemSearch */}
-                <div className='mb-5'>
-                  <div className='searchTile flex items-center'>
-                    <div className=''>
-                      <img src={PlaceHolder} alt='' />
-                    </div>
-                    <div className='ml-6'>
-                      <h2 className='text-textSearch mb-2 text-sm'>Education fun for durgham Family</h2>
-                      <p className='text-textsearchColor text-sm'>ByDurgham Family</p>
-                    </div>
-                  </div>
-                </div>
-                <div className='mb-5'>
-                  <div className='searchTile flex items-center'>
-                    <div>
-                      <img src={PlaceHolder1} alt='' />
-                    </div>
-                    <div className='ml-6'>
-                      <h2 className='text-textSearch mb-2 text-sm'>Education fun for durgham Family</h2>
-                      <p className='text-textsearchColor text-sm'>ByDurgham Family</p>
-                    </div>
-                  </div>
-                </div>
-                <div className='mb-5'>
-                  <div className='searchTile flex items-center'>
-                    <div>
-                      <img src={PlaceHolder2} alt='' />
-                    </div>
-                    <div className='ml-6'>
-                      <h2 className='text-textSearch mb-2 text-sm'>Education fun for durgham Family</h2>
-                      <p className='text-textsearchColor text-sm'>ByDurgham Family</p>
-                    </div>
-                  </div>
-                </div>
-                <div className='mb-5'>
-                  <div className='searchTile flex items-center'>
-                    <div>
-                      <img src={PlaceHolder3} alt='' />
-                    </div>
-                    <div className='ml-6'>
-                      <h2 className='text-textSearch mb-2 text-sm'>Education fun for durgham Family</h2>
-                      <p className='text-textsearchColor text-sm'>ByDurgham Family</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
             <button className='bg-bgPrimary w-[72px] h-[40px] rounded-full  flex mobile:w-[42px] mobile:h-[28px]'>
               <img
                 alt=''
@@ -170,28 +116,17 @@ const DashboardHeader = () => {
           </form>
         </div>
         <div className='dashboardHeader__right flex items-center w-[50%] justify-end mobile:justify-start'>
-          <div className='cursor-pointer dashboardHeader__right--fundrising flex items-center mobile:hidden'>
-            <img src={Up} className='w-[24px] h-[24px] mr-2' alt='' />
-            <div className='w-[172px] h-[26px] '>
-              <select className='cursor-pointer text-base p-1 ' style={{ color: '#4B5264' }}>
-                <option>FundriSing For</option>
-                <option>Danh sách 02</option>
-                <option>Danh sách 03</option>
-                <option>Danh sách 03</option>
-              </select>
-            </div>
-          </div>
           <div className='cursor-pointer dashboardHeader__right--start mobile:hidden'>
             <Link to={isAuthenticated ? '/product' : '/login'}>
-              <Button>
+              <Button color='primary'>
                 <div className='w-[214px]'>{isAuthenticated ? ' Go shopping' : 'Go to login'}</div>
               </Button>
             </Link>
           </div>
           {isAuthenticated ? (
             <div className='dashboardHeader__right--avatar ml-4 cursor-pointer'>
-              <div className='rounded-md flex items-center justify-center mobile:absolute mobile:right-4 mobile:top-[40px]'>
-                <img alt='' className='w-[52px] h-[52px] mobile:w-[40px] mobile:h-[40px] mobile:ml-8' src={Frame} />
+              <div className=' w-[52px] rounded-full overflow-hidden  h-[52px] mobile:w-[40px] mobile:h-[40px] mobile:ml-8 flex items-center justify-center mobile:absolute mobile:right-4 mobile:top-[40px]'>
+                {profile?.avatar ? <img src={profile?.avatar} alt='' /> : <img alt='' className='' src={Frame} />}
               </div>
             </div>
           ) : (
