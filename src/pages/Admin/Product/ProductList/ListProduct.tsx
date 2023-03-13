@@ -1,4 +1,5 @@
-import { isUndefined, omitBy } from 'lodash'
+import omitBy from 'lodash/omitBy'
+import isUndefined from 'lodash/isUndefined'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'

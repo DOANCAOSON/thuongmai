@@ -110,10 +110,10 @@ select {
   overflow: hidden;
 }
 .product-list {
-  width: 70vw;
+  width: 100%;
   margin: 0 auto;
   border-collapse: collapse;
-  margin-top: 50px;
+  /* margin-top: 50px; */
 }
 
 .product-list th,
@@ -123,18 +123,5 @@ select {
 }
 
 .product-list th {
-  background-color: #6de4ab;
   height: 60px;
-}
-
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-  width: 100%;
-}
-
-td {
-  padding: 8px;
-  text-align: left;
-  height: 140px;
 }

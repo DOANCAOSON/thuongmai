@@ -1,5 +1,8 @@
-import { isUndefined, omitBy } from 'lodash'
+import omitBy from 'lodash/omitBy'
+import isUndefined from 'lodash/isUndefined'
+import omit from 'lodash/omit'
 import { useQuery } from 'react-query'
+import { createSearchParams, Link } from 'react-router-dom'
 import { getCategories } from 'src/apis/category.api'
 import { getAllProduct, getProduct } from 'src/apis/product.api'
 import Pagination from 'src/components/Pagination'
@@ -32,7 +35,7 @@ const ProductList = () => {
     keepPreviousData: true,
     staleTime: 3 * 60 * 1000
   })
-  console.log(productsData)
+  console.log(productsData?.config.params.name)
   const { data: categoriesData } = useQuery({
     queryKey: ['category'],
     queryFn: () => {
@@ -61,6 +64,21 @@ const ProductList = () => {
               </div>
             ))}
           </div>
+          {productsData?.config.params.name && productsData.data.data.length === 0 && (
+            <div className='mb-10 flex justify-center gap-x-3'>
+              Sản phẩm hiện tại chưa có
+              <button className='hover:translate-x-0.5 hover:-translate-y-0.5 transition-all text-primary'>
+                <Link
+                  to={{
+                    pathname: '/product',
+                    search: createSearchParams(omit(queryConfig, ['category', 'name'])).toString()
+                  }}
+                >
+                  Tìm sản phẩm khác
+                </Link>
+              </button>
+            </div>
+          )}
           <Pagination queryConfig={queryConfig} pageSize={productsData.data.totalPage}></Pagination>
         </>
       )}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -11,6 +12,7 @@ const User = () => {
       return getUsers()
     }
   })
+  const userDataNotAdmin = userData?.data.data.filter((item: any) => item.role !== 'admin')
   const deleteMutation = useMutation({
     mutationFn: (id) => deleteUser(id),
     onSuccess: () => {
@@ -64,9 +66,9 @@ const User = () => {
             </tr>
           </thead>
 
-          {userData?.data.data && (
+          {userDataNotAdmin && (
             <tbody>
-              {userData.data.data.map((item) => (
+              {userDataNotAdmin.map((item: any) => (
                 <tr
                   key={item._id}
                   className='bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600'
@@ -78,7 +80,7 @@ const User = () => {
                   <td className='px-6 py-4 capitalize'>{item.role}</td>
                   <td className='px-6 py-4 flex gap-x-[10px]'>
                     <Link to={`/admin/user-detail/${item._id}`} className=''>
-                      Sửa
+                      Thông tin
                     </Link>{' '}
                     <button className='text-red-300 hover:shadow-md' onClick={() => handleRemoveUser(item._id)}>
                       Xoá

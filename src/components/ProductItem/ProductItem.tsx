@@ -35,7 +35,7 @@ const ProductItem = ({ product }: Props) => {
               <div className='text-textColor4 text-[12px] '>Giá gốc {FormatNumber(Number(product?.price))}đ</div>
             </div>
             <div className='flex flex-col'>
-              <h2 className='font-[600] text-[14px] leading-6 lowercase'>{FormatNumberK(product?.selled || 13)}</h2>
+              <h2 className='font-[600] text-[14px] leading-6 lowercase'>{FormatNumberK(product?.selled || 0)}</h2>
               <div className='text-textColor4 text-[12px] '>Đã bán</div>
             </div>
           </div>

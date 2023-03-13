@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useMatch, useParams } from 'react-router-dom'
@@ -6,7 +7,7 @@ import { addProduct, getProduct, updateProduct } from 'src/apis/admin.api'
 import { getCategories } from 'src/apis/category.api'
 import { Product } from 'src/types/product.type'
 import FileBase from 'react-file-base64'
-type FormStateType = Omit<Product, '_id' | 'createdAt' | 'updatedAt'>
+export type FormStateType = Omit<Product, '_id' | 'createdAt' | 'updatedAt'>
 const ProductAdd = () => {
   const addMatch = useMatch('/admin/product/add')
   const isAddmode = Boolean(addMatch)
@@ -17,9 +18,7 @@ const ProductAdd = () => {
     price: 0,
     category: {
       _id: '',
-      name: '',
-      createdAt: '',
-      updatedAt: ''
+      name: ''
     },
     countInStock: 0,
     description: '',
@@ -33,9 +32,9 @@ const ProductAdd = () => {
       return getCategories()
     }
   })
-  console.log(formState)
   const { mutate } = useMutation({
-    mutationFn: (body: FormStateType) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mutationFn: (body: any) => {
       return addProduct(body)
     }
   })
@@ -50,7 +49,8 @@ const ProductAdd = () => {
   })
   const updateProductMutation = useMutation({
     mutationFn: () => {
-      return updateProduct(id, formState)
+      return updateProduct(id, formState as Product)
+      // Không thêm product được thì sửa cái dòng này
     },
     onSuccess: (data) => {
       queryClient.setQueryData(['product', id], data)
@@ -214,7 +214,6 @@ const ProductAdd = () => {
             <FileBase
               type='file'
               name='picture'
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               onDone={(base64: any) => {
                 const listBase = base64.map((item: { base64: unknown }) => {
                   return item.base64

@@ -7,16 +7,21 @@ export interface Status {
   status: number | string
 }
 export interface Purchase {
-  _id?: string
-  buy_count?: number
-  price?: number
+  _id: string
+  buy_count: number
+  price: number
   price_before_discount?: number
   status?: number | string
-  user?: string
-  product_id?: string
-  product?: Product
-  createdAt?: string
-  updatedAt?: string
+  user: string
+  product_id: string
+  product: Product
+  createdAt: string
+  updatedAt: string
+}
+
+export interface PurchaseList {
+  message: string
+  data: Purchase[]
 }
 
 export interface ExtendedPurchase extends Purchase {

@@ -20,7 +20,7 @@ module.exports = {
         active: 'rgba(0, 0, 0, 0.25)',
         textBlack: '#000000',
         boderErr: '#ff0000',
-        borderNone: '#e5e7eb',
+        borderNone: '#e5e7eb'
       }
     },
     screens: {

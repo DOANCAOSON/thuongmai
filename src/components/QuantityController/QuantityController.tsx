@@ -1,21 +1,27 @@
 import { useState } from 'react'
+import InputNumber from '../InputNumber/InputNumber'
 interface Props {
   max?: number
   onIncrease?: (value: number) => void
   onDecrease?: (value: number) => void
   onType?: (value: number) => void
+  onFocusOut?: (value: number) => void
   classNameWrapper?: string
   value: string | number
+  disabled: boolean
 }
-const QuantityController = ({ max, onIncrease, onDecrease, onType, classNameWrapper = '', value }: Props) => {
-  const [valueInput, setValueInput] = useState<string>('1')
-  //   console.log(valueInput)
-  //   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //     const { value } = e.target
-  //     if (/^\d+$/.test(value) || value === '') {
-  //       setValueInput(value)
-  //     }
-  //   }
+const QuantityController = ({
+  max,
+  onIncrease,
+  onDecrease,
+  onType,
+  onFocusOut,
+  classNameWrapper = '',
+  value,
+  disabled
+}: Props) => {
+  const [localValue, setLocalValue] = useState<number>(Number(value || 0))
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let _value = Number(e.target.value)
     if (max !== undefined && _value > max) {
@@ -24,29 +30,42 @@ const QuantityController = ({ max, onIncrease, onDecrease, onType, classNameWrap
       _value = 1
     }
     onType && onType(_value)
+    setLocalValue(_value)
   }
   const decrease = () => {
-    let _value = Number(value) - 1
+    let _value = Number(value || localValue) - 1
     if (_value < 1) {
       _value = 1
     }
     onDecrease && onDecrease(_value)
+    setLocalValue(_value)
   }
   const increase = () => {
-    let _value = Number(value) + 1
-    if (max)
+    let _value = Number(value || localValue) + 1
+    if (max !== undefined)
       if (_value > max) {
         _value = max
       }
     onIncrease && onIncrease(_value)
+    setLocalValue(_value)
+  }
+
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement, Element>) => {
+    onFocusOut && onFocusOut(Number(event.target.value))
   }
   return (
-    <div className={'flex text-text-color justify-center' + classNameWrapper}>
-      <button className='text-[30px] border p-2' onClick={decrease}>
+    <div className={`flex text-text-color justify-center `}>
+      <button
+        className={`text-[30px] mobile:text-[14px] border p-2 ${disabled ? 'bg-gray-200 cursor-default' : ''}`}
+        onClick={decrease}
+      >
         -
       </button>
-      <input className='border w-[80px] text-[20px] text-center' type='text' value={value} onChange={handleChange} />
-      <button className='text-[30px] border p-2' onClick={increase}>
+      <InputNumber value={value || localValue} onBlur={handleBlur} onChange={handleChange}></InputNumber>
+      <button
+        className={`text-[30px] mobile:text-[14px] border p-2 ${disabled ? 'bg-gray-200 cursor-default' : ''}`}
+        onClick={increase}
+      >
         +
       </button>
     </div>

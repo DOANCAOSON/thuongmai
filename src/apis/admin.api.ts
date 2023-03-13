@@ -19,5 +19,8 @@ export const updateProduct = (id: unknown, params?: Omit<Product, '_id'>) =>
   http.put<Product>(`/product/update/${id}`, params)
 
 // User
-export const getUsers = () => http.get<ListUser>('/user/getAll')
+export const getUsers = () => http.get('/user/getAll')
 export const deleteUser = (id: unknown) => http.delete(`/user/delete-user/${id}`)
+
+// Purchase
+export const getAllPurchases = () => http.get(`/purchase/get-all`)

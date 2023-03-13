@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, lazy, Suspense } from 'react'
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
 import { AppContext } from './contexts/app.context'
 import AdminLayout from './layouts/AdminLayout'
@@ -11,14 +11,19 @@ import Order from './pages/Admin/Order'
 import ProductAdd from './pages/Admin/Product/ProductAdd/ProductAdd'
 import ListProduct from './pages/Admin/Product/ProductList/ListProduct'
 import User from './pages/Admin/User'
+import UserDetail from './pages/Admin/User/UserDetail'
 import Cart from './pages/Cart'
 import Dashboard from './pages/Dashboard'
-import Login from './pages/Login'
+import Evaluate from './pages/Evaluate/Evaluate'
+// import Login from './pages/Login'
+import NotFound from './pages/NotFound/NotFound'
 import UserOrder from './pages/Order/UserOrder'
 import ProductDetail from './pages/ProductDetail'
 import ProductList from './pages/ProductList'
 import Profile from './pages/Profile'
 import Register from './pages/Register'
+
+const Login = lazy(() => import('./pages/Login'))
 
 function ProtecedRoute() {
   const { isAuthenticated } = useContext(AppContext)
@@ -65,10 +70,18 @@ const useRouteElements = () => {
           )
         },
         {
-          path: '/order/:id',
+          path: '/order',
           element: (
             <DashboardLayout>
               <UserOrder />
+            </DashboardLayout>
+          )
+        },
+        {
+          path: '/evaluate',
+          element: (
+            <DashboardLayout>
+              <Evaluate />
             </DashboardLayout>
           )
         }
@@ -82,7 +95,9 @@ const useRouteElements = () => {
           path: 'login',
           element: (
             <RegisterLayout>
-              <Login />
+              <Suspense>
+                <Login />
+              </Suspense>
             </RegisterLayout>
           )
         },
@@ -125,7 +140,7 @@ const useRouteElements = () => {
           )
         },
         {
-          path: '/admin/list-order',
+          path: '/admin/order',
           element: (
             <AdminLayout>
               <Order />
@@ -165,6 +180,14 @@ const useRouteElements = () => {
           )
         },
         {
+          path: '/admin/user-detail/:id',
+          element: (
+            <AdminLayout>
+              <UserDetail />
+            </AdminLayout>
+          )
+        },
+        {
           path: '/admin/category/add',
           element: (
             <AdminLayout>
@@ -189,6 +212,11 @@ const useRouteElements = () => {
           )
         }
       ]
+    },
+    {
+      path: '*',
+      index: true,
+      element: <NotFound></NotFound>
     }
   ])
   return routeElements

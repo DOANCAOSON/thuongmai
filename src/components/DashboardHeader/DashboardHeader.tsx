@@ -1,19 +1,12 @@
 import Logo from '../../assets/images/Logo.png'
 import Search from '../../assets/images/Search.png'
-import Up from '../../assets/images/Up.png'
-import Frame from '../../assets/images/Frame.png'
+import Frame from '../../assets/images/Frame.jpg'
 import Bar from '../../assets/images/Bar.png'
-import amous from '../../assets/images/amous.png'
 import Dashboard from '../../assets/images/Dashboard.png'
 import Withdraw from '../../assets/images/Withdraw.png'
 import Profile from '../../assets/images/Profile.png'
 import Logout from '../../assets/images/Logout.png'
-import Light from '../../assets/images/Light.png'
 import Close from '../../assets/images/Close.png'
-import PlaceHolder from '../../assets/images/PlaceHolder.png'
-import PlaceHolder1 from '../../assets/images/PlaceHolder1.png'
-import PlaceHolder2 from '../../assets/images/PlaceHolder2.png'
-import PlaceHolder3 from '../../assets/images/PlaceHolder3.png'
 import { useContext, useState } from 'react'
 import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
@@ -22,11 +15,12 @@ import Button from '../Button'
 import useQueryConfig from 'src/hooks/useQueryConfig'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { omit } from 'lodash'
-import { useQuery } from 'react-query'
-import { getUser } from 'src/apis/auth.api'
+import omit from 'lodash/omit'
+import { useMutation, useQuery } from 'react-query'
+import { getUser, logout } from 'src/apis/auth.api'
 import { getProfileFromLS } from 'src/utils/auth'
 import { User } from 'src/types/user.type'
+import { toast } from 'react-toastify'
 
 const schema = yup
   .object({
@@ -35,6 +29,7 @@ const schema = yup
   .required()
 type FormData = yup.InferType<typeof schema>
 const DashboardHeader = () => {
+  const { reset } = useContext(AppContext)
   const navigate = useNavigate()
   const queryConfig = useQueryConfig()
   const { register, handleSubmit } = useForm<FormData>({
@@ -48,7 +43,6 @@ const DashboardHeader = () => {
   const [count, setCount] = useState(false)
   const [modal, setmModal] = useState(false)
   const [profile, setProfile] = useState<User>({})
-  const [dsearchModal, setdSearchModal] = useState(false)
   useQuery({
     queryKey: ['category', profileAccessToken?._id],
     queryFn: () => getUser(profileAccessToken?._id),
@@ -77,6 +71,17 @@ const DashboardHeader = () => {
       search: createSearchParams(config).toString()
     })
   })
+  const logOutMutation = useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      reset()
+      toast.success('Đăng xuất thành công!')
+    }
+  })
+  const handleLogout = () => {
+    logOutMutation.mutate()
+    setCount(!count)
+  }
   return (
     <div>
       <div className='dashboardHeader flex m-8'>
@@ -99,7 +104,6 @@ const DashboardHeader = () => {
             className={`cursor-pointer mobile:w-[217px] mobile:h-[40px] mobile:top-2 mobile:left-[50px] dashboardHeader__left--search flex items-center absolute z-10 bg-textColorwhite rounded-full w-[430px] h-[46px] p-1 pl-3 lr-2 left-[20%] top-1 shadow `}
           >
             <input
-              // onFocus={() => setmModal(true)}
               type='text'
               className='text-sm mobile:text-xs w-[85%] z-1'
               placeholder='Nhập tên sản phẩm'
@@ -149,18 +153,25 @@ const DashboardHeader = () => {
       <div
         className={`${
           count ? 'translate-x-0' : 'translate-x-[-100%]'
-        } transition-transform pt-10 w-[400px] h-[100vh] bg-slate-200 fixed z-[1000] top-0 hidden mobile:block `}
+        } transition-transform pt-10 w-[400px] h-[100vh] bg-white fixed z-[1000] top-0 hidden mobile:block `}
       >
         <div className='dasboardHeader__mobile flex  items-center justify-around'>
           <div className='dasboardHeader__mobile--logo w-[40px] h-[40px]'>
             <img src={Logo} className='w-10 h-10' alt='' />
           </div>
           <div>
-            <div className='dashboardHeader__right--start'>
-              <div className='rounded-md text-xs w-[166px] h-[40px] bg-secondary flex items-center justify-center text-white'>
-                Start a campaign
-              </div>
-            </div>
+            <button
+              className='dashboardHeader__right--start'
+              onClick={() => {
+                setCount(!count)
+              }}
+            >
+              <Link to={isAuthenticated ? '/product' : '/login'}>
+                <Button color='primary'>
+                  <div className='w-[214px]'>{isAuthenticated ? ' Go shopping' : 'Go to login'}</div>
+                </Button>
+              </Link>
+            </button>
           </div>
           <div className='dashboardHeader__left--logo mr-8 mobile:flex mobile:justify-center mobile:items-center'>
             <button
@@ -174,45 +185,54 @@ const DashboardHeader = () => {
           </div>
         </div>
         <div className='dasboardHeader__mobile p-10'>
-          <div className='w-[327px] h-[52px] dasboardHeader__mobile--container flex items-center'>
-            <div>
-              <img alt='' className='w-[18px] h-[18px]' src={Up} />
-            </div>
-            <p className='text-iconColor ml-2 mr-2 text-xs'>Fundrising For</p>
-            <div>
-              <img alt='' className='w-[10px] h-[10px]' src={amous} />
-            </div>
-          </div>
-          <div className='dasboardHeader__mobile--container w-[327px] h-[52px] flex items-center'>
-            <div>
-              <img alt='' className='w-[24px] h-[24px]' src={Dashboard} />
-            </div>
-            <p className='ml-5 text-iconColor lg-iconColor text-sm mr-1'>Dashboard</p>
-          </div>
-          <div className='dasboardHeader__mobile--container w-[327px] h-[52px] flex items-center'>
-            <div>
-              <img alt='' className='w-[24px] h-[24px]' src={Withdraw} />
-            </div>
-            <p className='ml-5 text-iconColor text-sm mr-1'>Withdraw</p>
-          </div>
-          <div className='dasboardHeader__mobile--container w-[327px] h-[52px] flex items-center'>
-            <div>
-              <img alt='' className='w-[24px] h-[24px]' src={Profile} />
-            </div>
-            <p className='ml-5 text-iconColor text-sm  mr-1'>Profile</p>
-          </div>
-          <div className='dasboardHeader__mobile--container w-[327px] h-[52px] flex items-center'>
+          <button onClick={() => setCount(!count)}>
+            <Link to='/' className='dasboardHeader__mobile--container w-[327px] h-[52px] flex items-center'>
+              <div>
+                <img alt='' className='w-[24px] h-[24px]' src={Dashboard} />
+              </div>
+              <p className='ml-5 text-iconColor lg-iconColor text-sm mr-1'>Trang chủ</p>
+            </Link>
+          </button>
+          <button onClick={() => setCount(!count)}>
+            <Link to='/cart' className='dasboardHeader__mobile--container w-[327px] h-[52px] flex items-center'>
+              <div>
+                <img alt='' className='w-[24px] h-[24px]' src={Withdraw} />
+              </div>
+              <p className='ml-5 text-iconColor text-sm mr-1'>Giỏ hàng</p>
+            </Link>
+          </button>
+          <button onClick={() => setCount(!count)}>
+            <Link to='/order' className='dasboardHeader__mobile--container w-[327px] h-[52px] flex items-center'>
+              <div className='stroke-[#A2A2A8]'>
+                <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                  <path
+                    d='M18.1111 8.14286V5.57143C18.1111 4.88944 17.8536 4.23539 17.3951 3.75315C16.9367 3.27092 16.315 3 15.6667 3H3.44444C2.79614 3 2.17438 3.27092 1.71596 3.75315C1.25754 4.23539 1 4.88944 1 5.57143V13.2857C1 13.9677 1.25754 14.6218 1.71596 15.104C2.17438 15.5862 2.79614 15.8571 3.44444 15.8571H5.88889M8.33333 21H20.5556C21.2039 21 21.8256 20.7291 22.284 20.2468C22.7425 19.7646 23 19.1106 23 18.4286V10.7143C23 10.0323 22.7425 9.37825 22.284 8.89601C21.8256 8.41377 21.2039 8.14286 20.5556 8.14286H8.33333C7.68503 8.14286 7.06327 8.41377 6.60485 8.89601C6.14643 9.37825 5.88889 10.0323 5.88889 10.7143V18.4286C5.88889 19.1106 6.14643 19.7646 6.60485 20.2468C7.06327 20.7291 7.68503 21 8.33333 21ZM16.8889 14.5714C16.8889 15.2534 16.6313 15.9075 16.1729 16.3897C15.7145 16.8719 15.0928 17.1429 14.4444 17.1429C13.7961 17.1429 13.1744 16.8719 12.716 16.3897C12.2575 15.9075 12 15.2534 12 14.5714C12 13.8894 12.2575 13.2354 12.716 12.7532C13.1744 12.2709 13.7961 12 14.4444 12C15.0928 12 15.7145 12.2709 16.1729 12.7532C16.6313 13.2354 16.8889 13.8894 16.8889 14.5714Z'
+                    strokeWidth='2'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                  />
+                </svg>
+              </div>
+              <p className='ml-5 text-iconColor text-sm mr-1'>Đặt hàng</p>
+            </Link>
+          </button>
+          <button onClick={() => setCount(!count)}>
+            <Link to='/profile' className='dasboardHeader__mobile--container w-[327px] h-[52px] flex items-center'>
+              <div>
+                <img alt='' className='w-[24px] h-[24px]' src={Profile} />
+              </div>
+              <p className='ml-5 text-iconColor text-sm  mr-1'>Trang cá nhân</p>
+            </Link>
+          </button>
+          <button
+            onClick={handleLogout}
+            className='dasboardHeader__mobile--container w-[327px] h-[52px] flex items-center'
+          >
             <div>
               <img alt='' className='w-[24px] h-[24px]' src={Logout} />
             </div>
-            <p className='ml-5 text-iconColor text-sm  mr-1'>Logout</p>
-          </div>{' '}
-          <div className='dasboardHeader__mobile--container w-[327px] h-[52px] flex items-center'>
-            <div>
-              <img alt='' className='w-[24px] h-[24px]' src={Light} />
-            </div>
-            <p className='ml-5 text-iconColor text-sm  mr-1'>Light/Dark</p>
-          </div>
+            <p className='ml-5 text-iconColor text-sm  mr-1'>Đăng xuất</p>
+          </button>{' '}
         </div>
       </div>
     </div>

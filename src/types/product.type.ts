@@ -1,17 +1,16 @@
+import { Category } from './category.type'
+
 export interface Product {
-  name?: string
-  image?: string[]
-  price?: number
-  countInStock?: number
+  name: string
+  image: string[]
+  price: number
+  countInStock: number
   rating?: number
   description?: string
   _id: string
   selled?: number
-  category?: {
-    _id: string
-    name: string
-  }
-  discount?: number
+  category: Category
+  discount: number
   createdAt: string
   updatedAt: string
 }

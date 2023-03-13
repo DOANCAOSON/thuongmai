@@ -3,7 +3,7 @@ import { sortBy, order as orderConstant } from 'src/constants/product'
 import classNames from 'classnames'
 import { ProductListComfig } from 'src/types/product.type'
 import { createSearchParams, Link, useNavigate } from 'react-router-dom'
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 import { Category } from 'src/types/category.type'
 import { QueryConfigS } from 'src/hooks/useQueryConfig'
 
@@ -41,6 +41,15 @@ const SortProductList = ({ categories, queryConfig }: Props) => {
         ...queryConfig,
         sort_by: sortBy.price,
         order: orderValue
+      }).toString()
+    })
+  }
+  const handleSearchByCategory = (categoryValue: string) => {
+    navigate({
+      pathname: '/product',
+      search: createSearchParams({
+        ...queryConfig,
+        category: categoryValue
       }).toString()
     })
   }
@@ -116,21 +125,15 @@ const SortProductList = ({ categories, queryConfig }: Props) => {
           {categories.map((item) => {
             const isActive = category === item._id
             return (
-              <Link
-                to={{
-                  pathname: '/product',
-                  search: createSearchParams({
-                    ...queryConfig,
-                    category: item._id
-                  }).toString()
-                }}
+              <button
+                onClick={() => handleSearchByCategory(item._id as string)}
                 key={item._id}
                 className={classNames('', {
                   'text-secondary': isActive
                 })}
               >
                 {item.name}
-              </Link>
+              </button>
             )
           })}
         </div>

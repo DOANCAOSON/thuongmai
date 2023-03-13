@@ -10,7 +10,7 @@ import { toast } from 'react-toastify'
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 
 const schema = yup
   .object({

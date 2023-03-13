@@ -1,13 +1,12 @@
 import { useState } from 'react'
 import { useMutation } from 'react-query'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { addToCart } from 'src/apis/purchase.api'
-import MainImage from 'src/assets/images/MainImage.png'
 import Vector from 'src/assets/images/Vector.png'
 import { FormatNumber, FormatNumberK } from 'src/hooks/useFormatNumber'
 import { Product } from 'src/types/product.type'
 import { getProfileFromLS } from 'src/utils/auth'
-import Button from '../Button'
 import QuantityController from '../QuantityController/QuantityController'
 
 interface Props {
@@ -15,28 +14,38 @@ interface Props {
   product: Product
 }
 
-interface bodyReq {
-  buy_count: number
-  product_id: string
-}
-
 const BigItem = ({ product, type }: Props) => {
   const profileAccessToken = getProfileFromLS()
-  console.log(product?._id)
   const [buyCount, setBuyCount] = useState(1)
+  const navigate = useNavigate()
   const handleBuyCount = (value: number) => {
     setBuyCount(value)
   }
-  const body: bodyReq = { buy_count: buyCount, product_id: product?._id }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const body: any = { buy_count: buyCount, product_id: product?._id }
 
   const addToCartMutation = useMutation({
     mutationFn: () => {
       return addToCart(profileAccessToken?._id, body)
+    },
+    onSuccess: () => {
+      toast.success('Đã thêm vào giỏ')
     }
   })
+
   const handleAddToCart = () => {
     addToCartMutation.mutate()
   }
+  const handleBuyNow = async () => {
+    const res = await addToCartMutation.mutateAsync(profileAccessToken?._id, body)
+    const purchase = res.data.data
+    navigate('/cart', {
+      state: {
+        purchaseId: purchase._id
+      }
+    })
+  }
+
   if (!product) return null
   return (
     <Link to={`/product/${product?._id}`} className='m-auto'>
@@ -50,22 +59,6 @@ const BigItem = ({ product, type }: Props) => {
           <div className={`${type ? 'h-[700px]' : 'h-[266px]'} w-[583px] mobile:w-[100%] mobile:h-[510px]`}>
             {product.image && <img src={product.image[0]} alt='' />}
           </div>
-          {type && (
-            <div className='flex gap-[10px] mt-[30px] justify-center'>
-              <div className='w-[90px] h-[70px]'>
-                <img src={MainImage} alt='' />
-              </div>
-              <div className='w-[90px] h-[70px]'>
-                <img src={MainImage} alt='' />
-              </div>
-              <div className='w-[90px] h-[70px]'>
-                <img src={MainImage} alt='' />
-              </div>
-              <div className='w-[90px] h-[70px]'>
-                <img src={MainImage} alt='' />
-              </div>
-            </div>
-          )}
         </div>
         <div
           className={`${
@@ -117,14 +110,18 @@ const BigItem = ({ product, type }: Props) => {
               onIncrease={handleBuyCount}
               onType={handleBuyCount}
               value={buyCount}
+              disabled={false}
             ></QuantityController>
             <div>{product?.countInStock} sản phẩm có sẵn</div>
           </div>
           {type && (
             <>
-              <Link to='/cart/2'>
-                <Button color='primary'>Mua ngay</Button>
-              </Link>
+              <button
+                onClick={handleBuyNow}
+                className='bg-primary text-4 font-[600]  text-white h-[52px] rounded-[10px] w-full  hover:opacity-90'
+              >
+                Mua ngay
+              </button>
               <button
                 onClick={handleAddToCart}
                 className={` bg-secondary text-4 font-[600]  text-white h-[52px] rounded-[10px] w-full  hover:opacity-90`}

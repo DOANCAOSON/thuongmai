@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { getUser, updateUser } from 'src/apis/auth.api'
 import { User } from 'src/types/user.type'
 import { toast } from 'react-toastify'
+import Frame from '../../assets/images/Frame.jpg'
 import FileBase from 'react-file-base64'
 
 type FormStateType = Omit<User, '_id'>
@@ -77,16 +78,9 @@ const Profile = () => {
           <div className='grid grid-cols-2 gap-x-10 mobile:grid-cols-1'>
             <div className='relative'>
               <div className='h-[250px]  w-[250px] bg-primary mx-auto rounded-[100rem] overflow-hidden'>
-                {formState?.avatar ? (
-                  <img src={formState?.avatar} alt='' />
-                ) : (
-                  <img
-                    src={'https://bedental.vn/wp-content/uploads/2022/11/f99a5cc9ebcceba1dd49af0d509732dc.jpg'}
-                    alt=''
-                  />
-                )}
+                {formState?.avatar ? <img src={formState?.avatar} alt='' /> : <img src={Frame} alt='' />}
               </div>
-              <button className='opacity-0 hover:opacity-100 cursor-pointer rounded-full h-[250px] flex justify-center items-center w-[250px] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
+              <button className='opacity-0 hover:opacity-100 cursor-pointer rounded-full h-[250px] flex justify-center items-center w-[250px] absolute top-[50%] left-[55%] translate-x-[-50%] translate-y-[-50%]'>
                 <FileBase
                   type='file'
                   name='picture'

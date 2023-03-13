@@ -9,13 +9,12 @@ const AdminHeader = () => {
   const [showCategory, setShowCategory] = useState(false)
   const [showProduct, setShowProduct] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
-  const { setIsAuthenticated, setProfile } = useContext(AppContext)
+  const { reset } = useContext(AppContext)
 
   const logOutMutation = useMutation({
     mutationFn: logout,
     onSuccess: () => {
-      setIsAuthenticated(false)
-      setProfile(null)
+      reset()
       toast.success('Đăng xuất thành công!')
     }
   })
@@ -195,7 +194,7 @@ const AdminHeader = () => {
           </li>
           <li>
             <Link
-              to=''
+              to='/admin/order'
               className='flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
             >
               <svg

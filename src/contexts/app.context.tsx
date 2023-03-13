@@ -9,9 +9,8 @@ interface AppContextInterface {
   profile: User | null
   setProfile: React.Dispatch<React.SetStateAction<User | null>>
   extendedPurchases: ExtendedPurchase[]
-  setExtendedPurchases: React.Dispatch<React.SetStateAction<ExtendedPurchase[]>>
-  cart: any
-  setCart: React.Dispatch<React.SetStateAction<User | null>>
+  setExtendedPurchase: React.Dispatch<React.SetStateAction<ExtendedPurchase[]>>
+  reset: () => void
 }
 export const getInitialAppContext: () => AppContextInterface = () => ({
   isAuthenticated: Boolean(getAccessTokenFromLS()),
@@ -19,9 +18,8 @@ export const getInitialAppContext: () => AppContextInterface = () => ({
   profile: getProfileFromLS(),
   setProfile: () => null,
   extendedPurchases: [],
-  setExtendedPurchases: () => null,
-  cart: [],
-  setCart: () => null
+  setExtendedPurchase: () => null,
+  reset: () => null
 })
 const initialAppContext = getInitialAppContext()
 
@@ -36,9 +34,13 @@ export const AppProvider = ({
 }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(initialAppContext.isAuthenticated)
   const [profile, setProfile] = useState<User | null>(initialAppContext.profile)
-  const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchase[]>(defaultValue.extendedPurchases)
-  const [cart, setCart] = useState(initialAppContext.cart)
+  const [extendedPurchases, setExtendedPurchase] = useState<ExtendedPurchase[]>(defaultValue.extendedPurchases)
 
+  const reset = () => {
+    setIsAuthenticated(false)
+    setExtendedPurchase([])
+    setProfile(null)
+  }
   return (
     <AppContext.Provider
       value={{
@@ -47,9 +49,8 @@ export const AppProvider = ({
         profile,
         setProfile,
         extendedPurchases,
-        setExtendedPurchases,
-        cart,
-        setCart
+        setExtendedPurchase,
+        reset
       }}
     >
       {children}
