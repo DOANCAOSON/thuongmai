@@ -4,6 +4,7 @@ import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 import { toast } from 'react-toastify'
 import { Link, useLocation } from 'react-router-dom'
+import { clearLS } from 'src/utils/auth'
 
 const Navbar = () => {
   const { isAuthenticated, reset } = useContext(AppContext)
@@ -12,6 +13,7 @@ const Navbar = () => {
     mutationFn: logout,
     onSuccess: () => {
       reset()
+      clearLS()
       toast.success('Đăng xuất thành công!')
     }
   })

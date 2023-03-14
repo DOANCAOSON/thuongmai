@@ -7,7 +7,7 @@ import Withdraw from '../../assets/images/Withdraw.png'
 import Profile from '../../assets/images/Profile.png'
 import Logout from '../../assets/images/Logout.png'
 import Close from '../../assets/images/Close.png'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { AppContext } from 'src/contexts/app.context'
@@ -39,15 +39,17 @@ const DashboardHeader = () => {
     resolver: yupResolver(schema)
   })
   const profileAccessToken = getProfileFromLS()
-
+  const { profile: profileUser } = useContext(AppContext)
   const [count, setCount] = useState(false)
   const [modal, setmModal] = useState(false)
   const [profile, setProfile] = useState<User>({})
+  useEffect(() => {
+    setProfile(profileAccessToken)
+  }, [profileAccessToken])
   useQuery({
     queryKey: ['category', profileAccessToken?._id],
     queryFn: () => getUser(profileAccessToken?._id),
     enabled: profileAccessToken?._id !== undefined,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onSuccess: (data: any) => {
       setProfile(data.data.data)
     }
@@ -121,11 +123,18 @@ const DashboardHeader = () => {
         </div>
         <div className='dashboardHeader__right flex items-center w-[50%] justify-end mobile:justify-start'>
           <div className='cursor-pointer dashboardHeader__right--start mobile:hidden'>
-            <Link to={isAuthenticated ? '/product' : '/login'}>
-              <Button color='primary'>
-                <div className='w-[214px]'>{isAuthenticated ? ' Go shopping' : 'Go to login'}</div>
-              </Button>
-            </Link>
+            <div className='flex gap-x-6'>
+              <Link to='/product'>
+                <Button color='primary'>
+                  <div className='w-[214px]'> Go shopping</div>
+                </Button>
+              </Link>
+              <Link to='/login' className={`${isAuthenticated ? 'hidden' : ''}`}>
+                <Button color='primary'>
+                  <div className='w-[214px]'> Đăng nhập</div>
+                </Button>
+              </Link>
+            </div>
           </div>
           {isAuthenticated ? (
             <div className='dashboardHeader__right--avatar ml-4 cursor-pointer'>

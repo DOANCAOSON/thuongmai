@@ -1,9 +1,11 @@
-import { useState } from 'react'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useContext, useState } from 'react'
 import { useMutation } from 'react-query'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { addToCart } from 'src/apis/purchase.api'
 import Vector from 'src/assets/images/Vector.png'
+import { AppContext } from 'src/contexts/app.context'
 import { FormatNumber, FormatNumberK } from 'src/hooks/useFormatNumber'
 import { Product } from 'src/types/product.type'
 import { getProfileFromLS } from 'src/utils/auth'
@@ -15,13 +17,14 @@ interface Props {
 }
 
 const BigItem = ({ product, type }: Props) => {
+  const { isAuthenticated } = useContext(AppContext)
+
   const profileAccessToken = getProfileFromLS()
   const [buyCount, setBuyCount] = useState(1)
   const navigate = useNavigate()
   const handleBuyCount = (value: number) => {
     setBuyCount(value)
   }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const body: any = { buy_count: buyCount, product_id: product?._id }
 
   const addToCartMutation = useMutation({
@@ -34,16 +37,24 @@ const BigItem = ({ product, type }: Props) => {
   })
 
   const handleAddToCart = () => {
-    addToCartMutation.mutate()
+    if (isAuthenticated) {
+      addToCartMutation.mutate()
+    } else {
+      toast.warn('Hãy đăng nhập để thực hiện!')
+    }
   }
   const handleBuyNow = async () => {
-    const res = await addToCartMutation.mutateAsync(profileAccessToken?._id, body)
-    const purchase = res.data.data
-    navigate('/cart', {
-      state: {
-        purchaseId: purchase._id
-      }
-    })
+    if (isAuthenticated) {
+      const res = await addToCartMutation.mutateAsync(profileAccessToken?._id, body)
+      const purchase = res.data.data
+      navigate('/cart', {
+        state: {
+          purchaseId: purchase._id
+        }
+      })
+    } else {
+      toast.warn('Hãy đăng nhập để thực hiện!')
+    }
   }
 
   if (!product) return null

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Google from '../../assets/images/Google.png'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -5,12 +6,15 @@ import { useMutation } from 'react-query'
 import * as yup from 'yup'
 import { Link, useNavigate } from 'react-router-dom'
 import Input from 'src/components/Input'
-import { LoginAccount } from 'src/apis/auth.api'
+import { LoginAccount, registerAccount } from 'src/apis/auth.api'
 import { toast } from 'react-toastify'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
 import omit from 'lodash/omit'
+import { GoogleLogin, GoogleLogout } from 'react-google-login'
+import { gapi } from 'gapi-script'
+import { setAccesTokenToLS, setProfileFromLS } from 'src/utils/auth'
 
 const schema = yup
   .object({
@@ -26,6 +30,17 @@ const schema = yup
   .required()
 type FormData = yup.InferType<typeof schema>
 const Login = () => {
+  const onSuccess = (response: any) => {
+    const body = {
+      name: response.profileObj.givenName,
+      avatar: response.profileObj.imageUrl,
+      email: response.profileObj.email
+    }
+    console.log(body)
+  }
+  const onFailure = (response: any) => {
+    console.log(response)
+  }
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const {
     register,
@@ -40,6 +55,7 @@ const Login = () => {
   const mutation = useMutation((body: Omit<FormData, 'cmd'>) => {
     return LoginAccount(body)
   })
+
   const onSubmit = (data: FormData) => {
     mutation.mutate(data, {
       onSuccess: (dataUser) => {
@@ -64,6 +80,13 @@ const Login = () => {
       }
     })
   }
+  const clientId = '564948588399-db0beu2kqorqf7rcuolf4u72jf48msek.apps.googleusercontent.com'
+  useEffect(() => {
+    gapi.load('client:auth2', () => {
+      gapi.auth2.init({ clientId: clientId })
+    })
+  }, [])
+
   return (
     <div className=' '>
       <div className='z-10 bg-white mx-auto w-[556px] mobile:w-[327px] border rounded-lg flex flex-col px-[60px] py-[50px] mobile:px-[38px]'>
@@ -77,12 +100,30 @@ const Login = () => {
           </div>
         </div>
         <div className=''>
-          <button className='flex items-center gap-x-2 w-full justify-center border rounded-md p-2 mb-[10px]'>
+          {/* <button className='flex items-center gap-x-2 w-full justify-center border rounded-md p-2 mb-[10px]'>
             <div className='w-6 h-6'>
               <img src={Google} alt='' />
             </div>
-            <h1 className=''>Đăng nhập bằng Google</h1>
-          </button>
+            <h1 className=''>Đăng nhập bằng Google</h1> */}
+          <GoogleLogin
+            clientId={clientId}
+            onSuccess={onSuccess}
+            render={(renderProp) => (
+              <button
+                disabled={renderProp.disabled}
+                onClick={renderProp.onClick}
+                className='flex items-center gap-x-2 w-full justify-center border rounded-md p-2 mb-[10px]'
+              >
+                <div className='w-6 h-6'>
+                  <img src={Google} alt='' />
+                </div>
+                <h1 className=''>Đăng nhập bằng Google</h1>{' '}
+              </button>
+            )}
+            onFailure={onFailure}
+            cookiePolicy='single_host_origin'
+            responseType='code,token'
+          />
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className='mt-[20px]'>
           <Input

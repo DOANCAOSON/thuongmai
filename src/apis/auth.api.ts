@@ -16,3 +16,7 @@ export const logout = () => http.post('/user/log-out')
 export const updateUser = (id: unknown, params?: Omit<BodyUpdateProfile, '_id'>) =>
   http.put<User>(`/user/update-user/${id}`, params)
 export const getUser = (id: unknown) => http.get<User>(`/user/get-details/${id}`)
+export const refreshToken = () =>
+  http.post(`/user/refresh-token`, {
+    withCredentials: true
+  })

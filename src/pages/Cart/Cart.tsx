@@ -8,7 +8,7 @@ import { purchasesStatus } from 'src/constants/perchase'
 import { Purchase } from 'src/types/purchase.type'
 // eslint-disable-next-line import/no-named-as-default
 import produce from 'immer'
-import { FormatNumber } from 'src/hooks/useFormatNumber'
+import { FormatNumber, generateNameId } from 'src/hooks/useFormatNumber'
 import QuantityController from 'src/components/QuantityController/QuantityController'
 import keyBy from 'lodash/keyBy'
 import { toast } from 'react-toastify'
@@ -280,7 +280,12 @@ const Cart = () => {
                           <div className='mr-4'>{purchase.product.name}</div>
                         </td>
                         <td className=''>
-                          <Link to={`/product/${purchase.product._id}`}>
+                          <Link
+                            to={`/product/${generateNameId({
+                              name: purchase.product?.name,
+                              id: purchase.product?._id
+                            })}`}
+                          >
                             <div className='h-[100px] w-[80px] block m-auto'>
                               <img src={purchase.product.image[0]} alt='' />
                             </div>
@@ -352,7 +357,12 @@ const Cart = () => {
                       checked={purchase.checked}
                       onChange={handleCheck(index)}
                     />
-                    <Link to={`/product/${purchase.product._id}`}>
+                    <Link
+                      to={`/product/${generateNameId({
+                        name: purchase.product?.name,
+                        id: purchase.product?._id
+                      })}`}
+                    >
                       <div className='h-[100px] w-[80px]'>
                         <img src={purchase.product.image[0]} alt='' />
                       </div>

@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { changeStatusPurchase, getPurchases } from 'src/apis/purchase.api'
 import { purchasesStatus } from 'src/constants/perchase'
-import { FormatNumber } from 'src/hooks/useFormatNumber'
+import { FormatNumber, generateNameId } from 'src/hooks/useFormatNumber'
 import { getProfileFromLS } from 'src/utils/auth'
 
 const UserOrder = () => {
@@ -87,7 +87,12 @@ const UserOrder = () => {
                           <div className='mr-4'>{purchase?.product?.name}</div>
                         </td>
                         <td className=''>
-                          <Link to={`/product/${purchase.product._id}`}>
+                          <Link
+                            to={`/product/${generateNameId({
+                              name: purchase.product?.name,
+                              id: purchase.product?._id
+                            })}`}
+                          >
                             <div className='h-[100px] w-[80px] block m-auto'>
                               <img src={purchase?.product?.image[0]} alt='' />
                             </div>
@@ -101,7 +106,7 @@ const UserOrder = () => {
                             Math.ceil(
                               Number(purchase?.product?.price) -
                                 (Number(purchase?.product?.price) * Number(purchase?.product?.discount)) / 100
-                            )
+                            ) * purchase.buy_count
                           )}
                           đ
                         </td>
@@ -115,7 +120,14 @@ const UserOrder = () => {
                           {purchase?.status === 4 && (
                             <div className='flex flex-col'>
                               <button className='text-secondary hover:translate-x-0.5 hover:-translate-y-0.5 transition-all'>
-                                <Link to={`/product/${purchase?.product?._id}`}>Mua lại</Link>
+                                <Link
+                                  to={`/product/${generateNameId({
+                                    name: purchase.product?.name,
+                                    id: purchase.product?._id
+                                  })}`}
+                                >
+                                  Mua lại
+                                </Link>
                               </button>
                               <button
                                 onClick={() => {
@@ -163,7 +175,12 @@ const UserOrder = () => {
                       key={purchase._id}
                       className='flex shadow-md p-2 rounded-md items-start mb-4 pl-4 justify-between'
                     >
-                      <Link to={`/product/${purchase.product._id}`}>
+                      <Link
+                        to={`/product/${generateNameId({
+                          name: purchase.product?.name,
+                          id: purchase.product?._id
+                        })}`}
+                      >
                         <div className='h-[100px] w-[80px]'>
                           <img src={purchase.product.image[0]} alt='' />
                         </div>
@@ -188,7 +205,14 @@ const UserOrder = () => {
                         <div>
                           {purchase?.status === 4 && (
                             <button className='text-secondary hover:translate-x-0.5 hover:-translate-y-0.5 transition-all'>
-                              <Link to={`/product/${purchase?.product?._id}`}>Mua lại</Link>
+                              <Link
+                                to={`/product/${generateNameId({
+                                  name: purchase.product?.name,
+                                  id: purchase.product?._id
+                                })}`}
+                              >
+                                Mua lại
+                              </Link>
                             </button>
                           )}
                           {purchase?.status === 2 && (

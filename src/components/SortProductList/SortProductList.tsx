@@ -6,12 +6,23 @@ import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 import omit from 'lodash/omit'
 import { Category } from 'src/types/category.type'
 import { QueryConfigS } from 'src/hooks/useQueryConfig'
+import Button from '@mui/material/Button'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
 
 interface Props {
   categories: Category[]
   queryConfig: QueryConfigS
 }
 const SortProductList = ({ categories, queryConfig }: Props) => {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
   const [moreOt, setMoreOt] = useState(false)
   const { category } = queryConfig
   const { sort_by = sortBy.createdAt, order } = queryConfig

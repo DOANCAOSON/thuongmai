@@ -1,6 +1,8 @@
 import axios, { type AxiosInstance } from 'axios'
 import omit from 'lodash/omit'
+import { refreshToken } from 'src/apis/auth.api'
 import { clearLS, getAccessTokenFromLS, setAccesTokenToLS, setProfileFromLS } from './auth'
+import { handleDecoded } from './utils'
 class Http {
   instance: AxiosInstance
   private accessToken?: string
@@ -24,6 +26,21 @@ class Http {
       },
       (error) => {
         return Promise.reject(error)
+      }
+    )
+    this.instance.interceptors.request.use(
+      async (config) => {
+        // Do something before request is sent
+        const currentTime = new Date()
+        const { decoded } = handleDecoded()
+        if (decoded?.exp < currentTime.getTime() / 1000) {
+          const data = await refreshToken()
+          config.headers.authorization = `Beare ${data?.access_token}`
+        }
+        return config
+      },
+      (err) => {
+        return Promise.reject(err)
       }
     )
     this.instance.interceptors.response.use(

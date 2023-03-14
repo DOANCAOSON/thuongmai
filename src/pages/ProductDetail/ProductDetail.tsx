@@ -6,12 +6,13 @@ import { useParams } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { getIdFromNameId } from 'src/hooks/useFormatNumber'
 import ProductItem from 'src/components/ProductItem/ProductItem'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { createComment, deleteComment, getCommentProduct } from 'src/apis/comment.api'
 import { getProfileFromLS } from 'src/utils/auth'
 import { toast } from 'react-toastify'
 import FileBase from 'react-file-base64'
 import Frame from 'src/assets/images/Frame.jpg'
+import { AppContext } from 'src/contexts/app.context'
 
 const ProductDetail = () => {
   const [showComment, setShowComment] = useState(false)
@@ -20,6 +21,8 @@ const ProductDetail = () => {
     image: [],
     product_id: ''
   }
+  const { isAuthenticated } = useContext(AppContext)
+
   const [valueComment, setValueComment] = useState(initialFromState)
   const profileAccessToken = getProfileFromLS()
   const { id: nameId } = useParams()
@@ -232,48 +235,55 @@ const ProductDetail = () => {
                     )}
                   </div>
                 ))}
-              <form onSubmit={handleSubmitComment}>
-                <div className='w-full mb-4 border border-gray-200 rounded-lg bg-gray-50  '>
-                  <div className='px-4 py-2 bg-white rounded-t-lg '>
-                    <label htmlFor='comment' className='sr-only'>
-                      Bình luận của bạn
-                    </label>
-                    <textarea
-                      id='comment'
-                      rows={4}
-                      className='w-full px-0 text-sm text-gray-900 bg-white border-0  focus:ring-0 '
-                      placeholder='Viết bình luận...'
-                      required
-                      value={valueComment.title}
-                      onChange={(event) => setValueComment((prev: any) => ({ ...prev, title: event.target.value }))}
-                    />
-                  </div>
-                  <div className='flex items-center justify-between px-3 py-2 border-t '>
-                    <button
-                      type='submit'
-                      className='inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary rounded-lg focus:ring-4 focus:ring-blue-200 -900 hover:bg-primary'
-                    >
-                      Bình luận
-                    </button>
-                    <div className='flex pl-0 space-x-1 sm:pl-2'>
-                      <FileBase
-                        type='file'
-                        name='picture'
-                        onDone={(base64: any) => {
-                          const listBase = base64.map((item: { base64: unknown }) => {
-                            return item.base64
-                          })
-                          setValueComment((prev) => {
-                            return { ...prev, image: listBase }
-                          })
-                        }}
-                        multiple={true}
-                        accept='image/png, image/jpg, image/webp'
+              {isAuthenticated && (
+                <form onSubmit={handleSubmitComment}>
+                  <div className='w-full mb-4 border border-gray-200 rounded-lg bg-gray-50  '>
+                    <div className='px-4 py-2 bg-white rounded-t-lg '>
+                      <label htmlFor='comment' className='sr-only'>
+                        Bình luận của bạn
+                      </label>
+                      <textarea
+                        id='comment'
+                        rows={4}
+                        className='w-full px-0 text-sm text-gray-900 bg-white border-0  focus:ring-0 '
+                        placeholder='Viết bình luận...'
+                        required
+                        value={valueComment.title}
+                        onChange={(event) => setValueComment((prev: any) => ({ ...prev, title: event.target.value }))}
                       />
                     </div>
+                    <div className='flex items-center justify-between px-3 py-2 border-t '>
+                      <button
+                        type='submit'
+                        className='inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary rounded-lg focus:ring-4 focus:ring-blue-200 -900 hover:bg-primary'
+                      >
+                        Bình luận
+                      </button>
+                      <div className='flex pl-0 space-x-1 sm:pl-2'>
+                        <FileBase
+                          type='file'
+                          name='picture'
+                          onDone={(base64: any) => {
+                            const listBase = base64.map((item: { base64: unknown }) => {
+                              return item.base64
+                            })
+                            setValueComment((prev) => {
+                              return { ...prev, image: listBase }
+                            })
+                          }}
+                          multiple={true}
+                          accept='image/png, image/jpg, image/webp'
+                        />
+                      </div>
+                    </div>
                   </div>
+                </form>
+              )}
+              {!isAuthenticated && (
+                <div className='border border-gray-200 mb-[20px] text-text-color rounded-lg bg-gray-50 p-4'>
+                  Đăng nhập để bình luận
                 </div>
-              </form>
+              )}
             </div>
           </section>
           <section className='mb-[20px] mobile:w-[327px] '>

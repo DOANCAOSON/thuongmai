@@ -1,11 +1,12 @@
-import { useContext, useState } from 'react'
-import { getProfileFromLS } from 'src/utils/auth'
+import { useEffect, useState } from 'react'
+import { getProfileFromLS, setProfileFromLS } from 'src/utils/auth'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { getUser, updateUser } from 'src/apis/auth.api'
 import { User } from 'src/types/user.type'
 import { toast } from 'react-toastify'
 import Frame from '../../assets/images/Frame.jpg'
 import FileBase from 'react-file-base64'
+import { omit } from 'lodash'
 
 type FormStateType = Omit<User, '_id'>
 const Profile = () => {
@@ -21,6 +22,16 @@ const Profile = () => {
   }
   const [formState, setFormState] = useState<FormStateType>(initialFromState)
 
+  useEffect(() => {
+    setFormState({
+      name: profileAccessToken?.name,
+      email: profileAccessToken?.email,
+      phone: profileAccessToken?.phone,
+      address: profileAccessToken?.address,
+      avatar: profileAccessToken?.avatar
+    })
+  }, [])
+
   useQuery({
     queryKey: ['user', profileAccessToken._id],
     queryFn: () => getUser(profileAccessToken._id),
@@ -34,7 +45,7 @@ const Profile = () => {
   const [isDisabled, setDisable] = useState(true)
   const [isDisabledEmail, setDisableEmail] = useState(true)
 
-  const updateCategoryMutation = useMutation({
+  const updateProfileMutation = useMutation({
     mutationFn: () => {
       // console.log(formState)
       return updateUser(profileAccessToken._id, formState)
@@ -48,8 +59,12 @@ const Profile = () => {
   }
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    updateCategoryMutation.mutate(undefined, {
+    updateProfileMutation.mutate(undefined, {
       onSuccess: () => {
+        const newProfile = { ...profileAccessToken, avatar: formState?.avatar }
+        setDisable(true)
+        setDisableEmail(true)
+        setProfileFromLS(newProfile)
         toast.success(' Đã sửa thành công!')
       }
     })

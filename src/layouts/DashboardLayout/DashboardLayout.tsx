@@ -15,7 +15,7 @@ const DashboardLayout = ({ children }: Props) => {
     if (profile?.role === 'admin') {
       navigate('/admin')
     }
-  }, [])
+  }, [profile?.role])
   return (
     <div className='mobile:w-[100vw] w-[1348px] m-auto'>
       <DashboardHeader />
